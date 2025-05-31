@@ -24,7 +24,7 @@
     }
     
 </script>
-<button class="p-2 text-purple-800 dark:text-yellow" on:click={toggleDarkMode}>
+<button class="p-2 text-purple-800 dark:text-yellow-200" on:click={toggleDarkMode}>
 	{#if $darkmode}
         <div in:slide={inTransition} out:slide={outTransition}>
             <Sun className = "w-8 h-8 fill-current"/>

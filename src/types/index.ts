@@ -8,4 +8,9 @@ export type markdownPost = {
         summary: string;
     };
     default: ComponentType;
-} 
+};
+
+export type MarkdownPostMetadataAndSlug = {
+    slug: string;
+    metadata: markdownPost["metadata"];
+}

@@ -20,7 +20,7 @@
 					Paslaugos
 				</a>
 				<a class="p-2 rounded-lg text-gray-700 hover:bg-gray-1" href="/projektai" target="_blank">
-					Projektai
+					Portfolio
 				</a>
 				<a class="p-2 rounded-lg text-gray-700 hover:bg-gray-1" href="/kontaktai" target="_blank">
 					Kontaktai
