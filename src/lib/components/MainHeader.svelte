@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Logo from "./api/Logo.svelte";
+	import Logo from "./svg/Logo.svelte";
 	import DarkmodeButton from "./DarkmodeButton.svelte";
 
 

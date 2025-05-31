@@ -1,8 +1,8 @@
 <script lang="ts">
     import {darkmode} from "$lib/stores/darkmode";
 	import { slide } from "svelte/transition";
-	import Moon from "./api/Moon.svelte";
-	import Sun from "./api/Sun.svelte";
+	import Moon from "./svg/Moon.svelte";
+	import Sun from "./svg/Sun.svelte";
 
     let inTransition = {
         duration: 400, delay: 500
