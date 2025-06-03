@@ -1,17 +1,21 @@
 <script lang="ts">
   import MainHeader from "$lib/components/MainHeader.svelte";
-  import ThemeInitializer from "$lib/components/ThemeInitializer.svelte";
   import { fly } from "svelte/transition";
   import "../app.css";
   import type { LayoutData } from "./$types";
+	import HomeHeader from "$lib/components/HomeHeader.svelte";
+	import Footer from "$lib/components/Footer.svelte";
+	import Hero from "$lib/components/Hero.svelte";
 
   export let data: LayoutData;
 
   $: pagePath = data.pathname;
 </script>
 
-<ThemeInitializer>
   <MainHeader />
+  <HomeHeader />
+  <Footer/>
+  <Hero/>
   {#key pagePath}
     <main
       in:fly={{ y: -15, duration: 200, delay: 300 }}
@@ -21,4 +25,3 @@
       <slot />
     </main>
   {/key}
-</ThemeInitializer>

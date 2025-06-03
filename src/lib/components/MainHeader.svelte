@@ -1,31 +1,47 @@
 <script lang="ts">
-	import Logo from "./svg/Logo.svelte";
-	import DarkmodeButton from "./DarkmodeButton.svelte";
-
-
+    import Logo from "./svg/Logo.svelte";
 </script>
 
-<header class="fixed z-10 top-0 inset-x-0 border-b bg-white dark:bg-dark-background dark:border-gray-800">
-		<nav class="flex items-center justify-between max-w-5xl mx-auto px-4 h-24">
-			<a href="/" class="flex items-center gap-2 font-bold">
-				<Logo className="w-12 h-12" />
-				<span class="text-black">agstatyba.lt</span>
-			</a>
-			<div class="flex space-x-1 items-center">
-				
-				<a class="p-2 rounded-lg text-gray-700 hover:bg-gray-1" href="/apie" target="_blank">
-					Apie
-				</a>
-				<a class="p-2 rounded-lg text-gray-700 hover:bg-gray-1" href="/paslaugos" target="_blank">
-					Paslaugos
-				</a>
-				<a class="p-2 rounded-lg text-gray-700 hover:bg-gray-1" href="/projektai" target="_blank">
+<header class="fixed z-10 top-0 w-full shadow-md inset-x-0 border-b bg-white dark:bg-dark-background dark:border-gray-800">
+    <nav class="flex items-center justify-between max-w-5xl mx-auto px-4 h-24">
+        <a href="/" class="flex items-center gap-2 font-bold">
+            <Logo className="w-12 h-12" />
+            <span class="text-black ">agstatyba.lt</span>
+        </a>
+        <div class="flex space-x-1 items-center">
+            <!-- Dropdown for Paslaugos -->
+            <div class="relative group">
+                <a href="/paslaugos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+                    Paslaugos
+                </a>
+                <div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
+					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Statybos darbai</a>
+                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektavimas</a>
+                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Interjero dizainas</a>
+                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Autorinė priežiūra</a>
+                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Konsultacija</a>
+                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namo sąmata</a>
+                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Kitos paslaugos</a>
+                </div>
+            </div>
+			<div class="relative group">
+				<a href="/portfolio" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
 					Portfolio
 				</a>
-				<a class="p-2 rounded-lg text-gray-700 hover:bg-gray-1" href="/kontaktai" target="_blank">
-					Kontaktai
-				</a>
-				<DarkmodeButton/>
+				<div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
+					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektai</a>
+					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų interjerai</a>
+				</div>
 			</div>
-		</nav>
-	</header>
+            <a href="/sip-namai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+                SIP namai
+            </a>
+            <a href="/kainos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+                Kainos
+            </a>
+            <a href="/kontaktai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+                Kontaktai
+            </a>
+        </div>
+    </nav>
+</header>
