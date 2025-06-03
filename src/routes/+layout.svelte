@@ -6,6 +6,8 @@
 	import HomeHeader from "$lib/components/HomeHeader.svelte";
 	import Footer from "$lib/components/Footer.svelte";
 	import Hero from "$lib/components/Hero.svelte";
+	import Section from "$lib/components/Section.svelte";
+	import Contacts from "$lib/components/Contacts.svelte";
 
   export let data: LayoutData;
 
@@ -15,6 +17,8 @@
   <MainHeader />
   <HomeHeader />
   <Footer/>
+  <Section/>
+  <Contacts/>
   <Hero/>
   {#key pagePath}
     <main
