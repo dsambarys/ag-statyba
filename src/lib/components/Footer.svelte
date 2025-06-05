@@ -1,10 +1,14 @@
-<footer class="fixed bottom-0 left-0 right-0 bg-[#111] w-screen pt-10 text-white">
-    <div class="flex items-center justify-center flex-col text-center">
-        <h2 class="text-[2.1rem] font-medium capitalize leading-[3rem]">agstatyba.lt</h2>
-        <p class="max-w-[500px] my-[10px] mx-auto leading-[28px] text-[14px] text-[#cacdd2]">Šioje svetainėje siūlome renovaciją, naują statybą, konsultacijas, projektų valdymą. Peržiūrėkite atliktus darbus, kainas, atsiliepimus ir susisiekite dėl individualaus pasiūlymo.
-</p>
-    </div>
-    <div class="bg-black w-screen p-5 pb-10 text-center">
-        <p class="float-left text-[14px] tracking-[0.125em] capitalize">copyright &copy;2030 <a class="text-[#44bae8] text-[16px] no-underline" href=”#”>agsatyba.lt</a>  </p>
+<footer class="bg-[#1f2937] text-white py-12 pb-4" role="contentinfo">
+    <div class="max-w-[1200px] mx-auto px-5">
+        <div class="grid gap-8 mb-8" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));">
+            <div class="footer-section">
+                <h3 class="mb-4 text-[var(--secondary-color)]">AGStatyba</h3>
+                <p data-translate="footer.description">Profesionalios statybų paslaugos. Kokybiški sprendimai jūsų projektams.</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom text-center pt-8 border-t border-[#374151] opacity-80">
+            <p>&copy; 2026 AGStatyba. <span data-translate="footer.rights">Visos teisės saugomos.</span></p>
+        </div>
     </div>
 </footer>

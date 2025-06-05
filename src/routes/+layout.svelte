@@ -16,10 +16,10 @@
 
   <MainHeader />
   <HomeHeader />
-  <Footer/>
   <Section/>
-  <Contacts/>
   <Hero/>
+  <Contacts/>
+  <Footer/>
   {#key pagePath}
     <main
       in:fly={{ y: -15, duration: 200, delay: 300 }}
