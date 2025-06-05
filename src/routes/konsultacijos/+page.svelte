@@ -1,5 +1,4 @@
 <script lang="ts">;
-	import Kontaktai from "../../routes/kontaktai/+page.svelte";
     import Logo from "./svg/Logo.svelte";
 </script>
 

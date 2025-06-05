@@ -1,5 +1,4 @@
 <script lang="ts">;
-	import Kontaktai from "../../routes/kontaktai/+page.svelte";
     import Logo from "./svg/Logo.svelte";
 </script>
 
@@ -12,7 +11,7 @@
         <div class="flex space-x-1 items-center">
             <!-- Dropdown for Paslaugos -->
             <div class="relative group">
-                <a href="/paslaugos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+                <a href="/routes/paslaugos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
                     Paslaugos
                 </a>
                 <div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
@@ -26,7 +25,7 @@
                 </div>
             </div>
 			<div class="relative group">
-				<a href="/portfolio" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+				<a href="/routes/portfolio" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
 					Portfolio
 				</a>
 				<div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
@@ -34,7 +33,7 @@
 					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų interjerai</a>
 				</div>
 			</div>
-            <a href="/sip-namai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+            <a href="/routes/sip-namai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
                 SIP namai
             </a>
             <a href="/routes/kainos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
@@ -43,7 +42,7 @@
             <a href="/routes/konsultacijos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
                 Konsultacijos
             </a>
-            <a href="/kontaktai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+            <a href="/routes/kontaktai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
                 Kontaktai
             </a>
         </div>
