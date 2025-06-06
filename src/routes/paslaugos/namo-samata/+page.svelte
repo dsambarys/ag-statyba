@@ -1,5 +1,45 @@
 <script lang="ts">
 	import Logo from "$lib/components/svg/Logo.svelte";
+    import type { ServicePageData } from '../../../types/services';
+    
+    export let data: ServicePageData;
+
+    const costCategories = [
+        {
+            title: 'Statybinės medžiagos',
+            items: ['Pamatų medžiagos', 'Sienos ir perdangos', 'Stogo medžiagos', 'Langai ir durys', 'Apdailos medžiagos']
+        },
+        {
+            title: 'Statybos darbai',
+            items: ['Žemės darbai', 'Pamatų įrengimas', 'Mūro darbai', 'Stogo įrengimas', 'Apdailos darbai']
+        },
+        {
+            title: 'Inžinerinės sistemos',
+            items: ['Šildymo sistema', 'Vandentiekis', 'Elektros instaliacija', 'Vėdinimo sistema', 'Nuotekų sistema']
+        },
+        {
+            title: 'Papildomos išlaidos',
+            items: ['Projektavimas', 'Leidimai', 'Geodeziniai matavimai', 'Techninė priežiūra', 'Transporto išlaidos']
+        }
+    ];
+
+    const estimateTypes = [
+        {
+            title: 'Preliminari sąmata',
+            description: 'Apytikslė statybos kaštų sąmata, padedanti susidaryti bendrą vaizdą apie projekto biudžetą.',
+            suitable: 'Tinka pradiniam planavimui'
+        },
+        {
+            title: 'Detali sąmata',
+            description: 'Išsami sąmata su tiksliais medžiagų kiekiais ir darbų įkainiais.',
+            suitable: 'Tinka statybos pradžiai'
+        },
+        {
+            title: 'Konkursinė sąmata',
+            description: 'Sąmata, skirta rangovų pasiūlymams palyginti ir deryboms vesti.',
+            suitable: 'Tinka rangovų konkursui'
+        }
+    ];
 </script>
 
 <header class="fixed z-10 top-0 w-full shadow-md inset-x-0 border-b bg-white dark:bg-dark-background dark:border-gray-800">
@@ -48,3 +88,130 @@
         </div>
     </nav>
 </header>
+
+<div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">{data.service.title}</h1>
+            <div class="w-24 h-0.5 bg-gray-300 mx-auto mb-8"></div>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">{data.service.description}</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <!-- Left Column -->
+            <div class="space-y-8">
+                <!-- Features -->
+                <div class="bg-gray-50 p-8 rounded-lg">
+                    <h2 class="text-2xl font-semibold mb-6">Sąmatos sudarymo paslaugos</h2>
+                    <ul class="space-y-4">
+                        {#each data.service.features || [] as feature}
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-3">✓</span>
+                                <span>{feature}</span>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+
+                <!-- Estimate Types -->
+                <div class="bg-white p-8 rounded-lg border border-gray-100">
+                    <h2 class="text-2xl font-semibold mb-6">Sąmatų tipai</h2>
+                    <div class="space-y-6">
+                        {#each estimateTypes as type}
+                            <div class="p-6 bg-gray-50 rounded-lg">
+                                <h3 class="font-semibold text-lg mb-2">{type.title}</h3>
+                                <p class="text-gray-600 mb-2">{type.description}</p>
+                                <span class="text-sm text-blue-600">{type.suitable}</span>
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                <div class="bg-gray-50 p-8 rounded-lg">
+                    <h2 class="text-2xl font-semibold mb-6">Kodėl rinktis mus?</h2>
+                    <ul class="space-y-4">
+                        {#each data.service.benefits || [] as benefit}
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-3">•</span>
+                                <span>{benefit}</span>
+                            </li>
+                        {/each}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-8">
+                <!-- Process Steps -->
+                <div class="bg-white">
+                    <h2 class="text-2xl font-semibold mb-8">Sąmatos rengimo eiga</h2>
+                    <div class="space-y-6">
+                        {#each data.service.process || [] as step}
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
+                                    <span class="text-xl font-semibold">{step.order}</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-2">{step.title}</h3>
+                                    <p class="text-gray-600">{step.description}</p>
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+
+                <!-- Cost Categories -->
+                <div class="bg-gray-50 p-8 rounded-lg">
+                    <h2 class="text-2xl font-semibold mb-6">Sąmatos sudėtis</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {#each costCategories as category}
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h3 class="font-semibold mb-3">{category.title}</h3>
+                                <ul class="space-y-2">
+                                    {#each category.items as item}
+                                        <li class="text-sm text-gray-600 flex items-center">
+                                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                                            {item}
+                                        </li>
+                                    {/each}
+                                </ul>
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+
+                <!-- Image if available -->
+                {#if data.service.imageUrl}
+                    <img 
+                        src={data.service.imageUrl} 
+                        alt={data.service.title}
+                        class="w-full h-64 object-cover rounded-lg shadow-lg"
+                    />
+                {/if}
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="text-center bg-gray-50 p-8 rounded-lg">
+            <h2 class="text-2xl font-semibold mb-4">Susidomėjote?</h2>
+            <p class="text-gray-600 mb-6">Susisiekite su mumis aptarti jūsų projekto sąmatos</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a 
+                    href="/kontaktai" 
+                    class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    Gauti pasiūlymą
+                </a>
+                <a 
+                    href="/paslaugos/konsultacijos" 
+                    class="inline-block bg-gray-100 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                    Nemokama konsultacija
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
