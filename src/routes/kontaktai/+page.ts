@@ -19,9 +19,9 @@ interface ContactInfo {
 export const load: Load = async () => {
     const contactInfo: ContactInfo = {
         companyName: 'AG Statyba',
-        address: 'Vilnius, Lietuva',
-        phone: '+370 600 00000',
-        email: 'info@agstatyba.lt',
+        address: 'Klaipėda, Lietuva',
+        phone: '+370 681 42619',
+        email: 'test@agstatyba.lt',
         workingHours: [
             { days: 'Pirmadienis - Penktadienis', hours: '8:00 - 18:00' },
             { days: 'Šeštadienis', hours: '9:00 - 15:00' },

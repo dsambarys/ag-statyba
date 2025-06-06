@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Service {
+  id            String   @id @default(uuid())
+  nameLt        String   @unique @map("name_lt")
+  nameEn        String   @unique @map("name_en")
+  descriptionLt String   @map("description_lt")
+  descriptionEn String   @map("description_en")
+  priceRange    String?  @map("price_range")
+  slug          String   @unique
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  projects        Project[]
+  serviceRequests ServiceRequest[]
+  testimonials    Testimonial[]
+
+  @@map("services")
+}
+
+model Project {
+  id            String   @id @default(uuid())
+  serviceId     String   @map("service_id")
+  titleLt       String   @map("title_lt")
+  titleEn       String   @map("title_en")
+  descriptionLt String   @map("description_lt")
+  descriptionEn String   @map("description_en")
+  year          Int
+  location      String
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  service Service @relation(fields: [serviceId], references: [id])
+  images  Image[]
+
+  @@map("projects")
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  projectId String   @map("project_id")
+  url       String
+  altLt     String   @map("alt_lt")
+  altEn     String   @map("alt_en")
+  isMain    Boolean  @default(false) @map("is_main")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@map("images")
+}
+
+model ServiceRequest {
+  id          String        @id @default(uuid())
+  serviceId   String        @map("service_id")
+  name        String
+  email       String
+  phone       String?
+  projectType String        @map("project_type")
+  location    String
+  budget      Decimal?
+  message     String
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("service_requests")
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  serviceId String   @map("service_id")
+  name      String
+  rating    Int
+  comment   String
+  isApproved Boolean  @default(false) @map("is_approved")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("testimonials")
+}
+
+model Language {
+  code     String  @id
+  name     String
+  isActive Boolean @default(true) @map("is_active")
+
+  @@map("languages")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum RequestStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+} 
