@@ -10,8 +10,8 @@
             Esame orientuoti į klientą, todėl kiekvienas projektas vykdomas atsakingai, laikantis terminų ir biudžeto.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-            <a href="/routes/kontaktai" class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-semibold text-white bg-orange-600 hover:bg-orange-500 hover:-translate-y-0.5 transition duration-300">Gauti pasiūlymą</a>
-            <a href="/routes/paslaugos" class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-semibold text-white border-2 border-white hover:bg-white hover:text-orange-600 transition duration-300">Peržiūrėti paslaugas</a>
+            <a href="/kontaktai" class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-semibold text-white bg-orange-600 hover:bg-orange-500 hover:-translate-y-0.5 transition duration-300">Gauti pasiūlymą</a>
+            <a href="/paslaugos" class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-semibold text-white border-2 border-white hover:bg-white hover:text-orange-600 transition duration-300">Peržiūrėti paslaugas</a>
         </div>
     </div>
 </section>
