@@ -52,6 +52,9 @@
 </header>
 
 <script lang="ts">
+    import type { PortfolioItem, ProjectFilters } from '../../../types/portfolio';
+    import ProjectCard from '$lib/components/ProjectCard.svelte';
+    
     export let data: { projects: PortfolioItem[] };
     
     let filters: ProjectFilters = {};

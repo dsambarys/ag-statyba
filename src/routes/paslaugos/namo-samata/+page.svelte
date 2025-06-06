@@ -106,12 +106,26 @@
                 <div class="bg-gray-50 p-8 rounded-lg">
                     <h2 class="text-2xl font-semibold mb-6">Sąmatos sudarymo paslaugos</h2>
                     <ul class="space-y-4">
-                        {#each data.service.features || [] as feature}
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3">✓</span>
-                                <span>{feature}</span>
-                            </li>
-                        {/each}
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Detalus medžiagų kiekių skaičiavimas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Darbų kaštų įvertinimas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Statybos etapų planavimas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Biudžeto optimizavimas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Finansinė konsultacija</span>
+                        </li>
                     </ul>
                 </div>
 
@@ -131,14 +145,24 @@
 
                 <!-- Benefits -->
                 <div class="bg-gray-50 p-8 rounded-lg">
-                    <h2 class="text-2xl font-semibold mb-6">Kodėl rinktis mus?</h2>
+                    <h2 class="text-2xl font-semibold mb-6">Kodėl verta užsakyti sąmatą?</h2>
                     <ul class="space-y-4">
-                        {#each data.service.benefits || [] as benefit}
-                            <li class="flex items-start">
-                                <span class="text-blue-500 mr-3">•</span>
-                                <span>{benefit}</span>
-                            </li>
-                        {/each}
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3">•</span>
+                            <span>Tikslus projekto biudžeto planavimas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3">•</span>
+                            <span>Išvengiama nenumatytų išlaidų</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3">•</span>
+                            <span>Efektyvus resursų paskirstymas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3">•</span>
+                            <span>Skaidrus projekto finansavimas</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -149,17 +173,42 @@
                 <div class="bg-white">
                     <h2 class="text-2xl font-semibold mb-8">Sąmatos rengimo eiga</h2>
                     <div class="space-y-6">
-                        {#each data.service.process || [] as step}
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                                    <span class="text-xl font-semibold">{step.order}</span>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold mb-2">{step.title}</h3>
-                                    <p class="text-gray-600">{step.description}</p>
-                                </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-xl font-semibold">1</span>
                             </div>
-                        {/each}
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Projekto analizė</h3>
+                                <p class="text-gray-600">Išsami projekto dokumentacijos peržiūra</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-xl font-semibold">2</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Kiekių skaičiavimas</h3>
+                                <p class="text-gray-600">Detalus medžiagų ir darbų apimčių nustatymas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-xl font-semibold">3</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Kaštų vertinimas</h3>
+                                <p class="text-gray-600">Rinkos kainų analizė ir sąmatos sudarymas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-xl font-semibold">4</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Optimizavimas</h3>
+                                <p class="text-gray-600">Biudžeto optimizavimas ir alternatyvų pasiūlymai</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -196,22 +245,14 @@
 
         <!-- Contact Section -->
         <div class="text-center bg-gray-50 p-8 rounded-lg">
-            <h2 class="text-2xl font-semibold mb-4">Susidomėjote?</h2>
-            <p class="text-gray-600 mb-6">Susisiekite su mumis aptarti jūsų projekto sąmatos</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a 
-                    href="/kontaktai" 
-                    class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    Gauti pasiūlymą
-                </a>
-                <a 
-                    href="/paslaugos/konsultacijos" 
-                    class="inline-block bg-gray-100 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                    Nemokama konsultacija
-                </a>
-            </div>
+            <h2 class="text-2xl font-semibold mb-4">Norite sužinoti savo projekto kainą?</h2>
+            <p class="text-gray-600 mb-6">Susisiekite su mumis ir gaukite profesionalią namo sąmatą</p>
+            <a 
+                href="/kontaktai" 
+                class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                Susisiekti
+            </a>
         </div>
     </div>
 </div>

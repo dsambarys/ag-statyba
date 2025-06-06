@@ -99,12 +99,26 @@
                 <div class="bg-gray-50 p-8 rounded-lg">
                     <h2 class="text-2xl font-semibold mb-6">Projektavimo paslaugos</h2>
                     <ul class="space-y-4">
-                        {#each data.service.features || [] as feature}
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3">✓</span>
-                                <span>{feature}</span>
-                            </li>
-                        {/each}
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Architektūriniai sprendimai ir eskizai</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Konstrukciniai sprendimai</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Inžinerinių sistemų projektavimas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Energetinio naudingumo skaičiavimai</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Statybos leidimo dokumentacija</span>
+                        </li>
                     </ul>
                 </div>
 

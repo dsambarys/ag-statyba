@@ -7,7 +7,17 @@ export const prerender = true;
 
 // get url path whenever visiting a new page
 export const load: LayoutLoad = ({ url }) => {
+  // Define which pages should show the home components
+  const showHomeComponents = url.pathname === '/';
+  
+  // Define which pages should show the main header
+  const hideMainHeader = ['/kainos', '/paslaugos', '/portfolio'].some(path => 
+    url.pathname.startsWith(path)
+  );
+
   return {
-    pathname: url.pathname
+    pathname: url.pathname,
+    showHomeComponents,
+    hideMainHeader
   };
 };

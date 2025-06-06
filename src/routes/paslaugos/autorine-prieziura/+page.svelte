@@ -5,53 +5,6 @@
     export let data: ServicePageData;
 </script>
 
-<header class="fixed z-10 top-0 w-full shadow-md inset-x-0 border-b bg-white dark:bg-dark-background dark:border-gray-800">
-    <nav class="flex items-center justify-between max-w-5xl mx-auto px-4 h-24">
-        <a href="/" class="flex items-center gap-2 font-bold">
-            <Logo className="w-12 h-12" />
-            <span class="text-black ">agstatyba.lt</span>
-        </a>
-        <div class="flex space-x-1 items-center">
-            <!-- Dropdown for Paslaugos -->
-            <div class="relative group">
-                <a href="/paslaugos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-                    Paslaugos
-                </a>
-                <div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
-                    <a href="/paslaugos/staybos-darbai" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Statybos darbai</a>
-                    <a href="/paslaugos/namu-projektavimas" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektavimas</a>
-                    <a href="/paslaugos/interjero-prieziura" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Interjero dizainas</a>
-                    <a href="/paslaugos/autorine-prieziura" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Autorinė priežiūra</a>
-                    <a href="/paslaugos/konsultacija" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Konsultacija</a>
-                    <a href="/paslaugos/namo-samata" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namo sąmata</a>
-                    <a href="/paslaugos/kitos-paslaugos" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Kitos paslaugos</a>
-                </div>
-            </div>
-            <div class="relative group">
-                <a href="/portfolio" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-                    Portfolio
-                </a>
-                <div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
-                    <a href="/portfolio/namu-projektai" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektai</a>
-                    <a href="/portfolio/namu-interjerai" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų interjerai</a>
-                </div>
-            </div>
-            <a href="/sip-namai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-                SIP namai
-            </a>
-            <a href="/kainos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-                Kainos
-            </a>
-            <a href="/konsultacijos" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-                Konsultacijos
-            </a>
-            <a href="/kontaktai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-                Kontaktai
-            </a>
-        </div>
-    </nav>
-</header>
-
 <div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
@@ -62,77 +15,59 @@
         </div>
 
         <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <!-- Left Column -->
-            <div class="space-y-8">
-                <!-- Features -->
-                <div class="bg-gray-50 p-8 rounded-lg">
-                    <h2 class="text-2xl font-semibold mb-6">Paslaugos apima</h2>
-                    <ul class="space-y-4">
-                        {#each data.service.features || [] as feature}
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3">✓</span>
-                                <span>{feature}</span>
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
-
-                <!-- Benefits -->
-                <div class="bg-gray-50 p-8 rounded-lg">
-                    <h2 class="text-2xl font-semibold mb-6">Kodėl rinktis mus?</h2>
-                    <ul class="space-y-4">
-                        {#each data.service.benefits || [] as benefit}
-                            <li class="flex items-start">
-                                <span class="text-blue-500 mr-3">•</span>
-                                <span>{benefit}</span>
-                            </li>
-                        {/each}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            <!-- Left Column - Main Description -->
+            <div class="space-y-6">
+                <h2 class="text-2xl font-semibold text-gray-800">Kodėl svarbi autorinė priežiūra?</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Autorinė priežiūra užtikrina, kad statybos darbai būtų atliekami tiksliai pagal projektą.
+                    Tai padeda išvengti klaidų, užtikrina kokybę ir padeda laiku identifikuoti galimus iššūkius.
+                </p>
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Pagrindiniai privalumai:</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                        <li>Užtikrinama aukšta statybos darbų kokybė</li>
+                        <li>Laiku sprendžiamos iškilusios problemos</li>
+                        <li>Išvengiama brangiai kainuojančių klaidų</li>
+                        <li>Garantuojamas projekto vizijos išpildymas</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Right Column -->
-            <div class="space-y-8">
-                <!-- Process Steps -->
-                <div class="bg-white">
-                    <h2 class="text-2xl font-semibold mb-8">Priežiūros eiga</h2>
-                    <div class="space-y-6">
-                        {#each data.service.process || [] as step}
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                                    <span class="text-xl font-semibold">{step.order}</span>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold mb-2">{step.title}</h3>
-                                    <p class="text-gray-600">{step.description}</p>
-                                </div>
-                            </div>
-                        {/each}
+            <!-- Right Column - Process Steps -->
+            <div class="bg-gray-50 p-8 rounded-lg space-y-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Autorinės priežiūros procesas</h2>
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">1</div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Reguliarūs vizitai</h3>
+                            <p class="text-gray-600">Periodiškai tikriname statybos eigą ir darbų atitikimą projektui</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">2</div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Dokumentacija</h3>
+                            <p class="text-gray-600">Vedame išsamų statybos darbų žurnalą ir fiksuojame pastabas</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">3</div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Konsultacijos</h3>
+                            <p class="text-gray-600">Teikiame rekomendacijas ir sprendžiame iškilusius klausimus</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">4</div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Kokybės kontrolė</h3>
+                            <p class="text-gray-600">Užtikriname, kad visi darbai atitiktų kokybės standartus</p>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Image if available -->
-                {#if data.service.imageUrl}
-                    <img 
-                        src={data.service.imageUrl} 
-                        alt={data.service.title}
-                        class="w-full h-64 object-cover rounded-lg shadow-lg"
-                    />
-                {/if}
             </div>
-        </div>
-
-        <!-- Contact Section -->
-        <div class="text-center bg-gray-50 p-8 rounded-lg">
-            <h2 class="text-2xl font-semibold mb-4">Susidomėjote?</h2>
-            <p class="text-gray-600 mb-6">Susisiekite su mumis aptarti projekto priežiūros detalių</p>
-            <a 
-                href="/kontaktai" 
-                class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-                Susisiekti
-            </a>
         </div>
     </div>
 </div>
