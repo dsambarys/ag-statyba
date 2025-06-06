@@ -3,7 +3,7 @@ export interface PortfolioItem {
     title: string;
     description: string;
     images: string[];
-    category: 'house-project' | 'house-interior';
+    category: 'namo-projektas' | 'namo-interjeras';
     details: {
         area?: number;  // Square meters
         location?: string;
