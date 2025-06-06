@@ -9,7 +9,7 @@ const getMockInteriors = (): PortfolioItem[] => {
             title: 'Modernaus Namo Interjeras',
             description: 'Šiuolaikiškas ir elegantiškas interjero dizainas',
             images: ['/images/portfolio/interior1.jpg'],
-            category: 'house-interior',
+            category: 'namo-interjeras',
             details: {
                 area: 180,
                 location: 'Vilnius',
@@ -23,7 +23,7 @@ const getMockInteriors = (): PortfolioItem[] => {
             title: 'Skandinaviškas Interjeras',
             description: 'Šviesus ir jaukus skandinaviško stiliaus interjeras',
             images: ['/images/portfolio/interior2.jpg'],
-            category: 'house-interior',
+            category: 'namo-interjeras',
             details: {
                 area: 120,
                 location: 'Kaunas',
