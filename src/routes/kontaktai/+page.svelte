@@ -32,16 +32,16 @@
 	};
 </script>
 
-<!-- contact section -->
-<section class="py-20 bg-[#f9fafb]" aria-labelledby="contact-title">
-	<div class="max-w-[1200px] mx-auto px-5 ">
+<!-- Hero Section with Centered Form -->
+<section class="min-h-screen bg-[#f9fafb] flex flex-col items-center justify-center py-20" aria-labelledby="contact-title">
+	<div class="max-w-[1200px] w-full mx-auto px-5">
 		<div class="text-center mb-12">
 			<h1 class="text-5xl font-bold" data-translate="contact.title">Susisiekite su mumis</h1>
-			<p data-translate="contact.subtitle">Pasiruošę atsakyti į jūsų klausimus ir aptarti projektus</p>
+			<p class="mt-4 text-gray-600" data-translate="contact.subtitle">Pasiruošę atsakyti į jūsų klausimus ir aptarti projektus</p>
 		</div>
 		
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-			<!-- Contact Form -->
+		<!-- Centered Contact Form -->
+		<div class="max-w-2xl mx-auto mb-20">
 			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
 				<h2 class="text-2xl font-semibold mb-6">Parašykite mums</h2>
 				<form on:submit|preventDefault={handleSubmit} class="space-y-6">
@@ -122,88 +122,92 @@
 					</div>
 				</form>
 			</div>
+		</div>
+	</div>
+</section>
 
-			<!-- Contact Information -->
-			<div class="space-y-8">
-				<!-- Company Info -->
-				<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-					<h2 class="text-2xl font-semibold mb-6">Kontaktinė informacija</h2>
-					<div class="space-y-4">
-						<div class="flex items-start">
-							<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-								</svg>
-							</div>
-							<div class="ml-4">
-								<h3 class="text-lg font-medium">{data.contactInfo.companyName}</h3>
-								<p class="text-gray-600">{data.contactInfo.address}</p>
-							</div>
+<!-- Additional Information Section -->
+<section class="bg-white py-20">
+	<div class="max-w-[1200px] mx-auto px-5">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			<!-- Company Info -->
+			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+				<h2 class="text-2xl font-semibold mb-6">Kontaktinė informacija</h2>
+				<div class="space-y-4">
+					<div class="flex items-start">
+						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+							</svg>
 						</div>
-						<div class="flex items-start">
-							<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-								</svg>
-							</div>
-							<div class="ml-4">
-								<h3 class="text-lg font-medium">Telefonas</h3>
-								<a href={`tel:${data.contactInfo.phone}`} class="text-blue-600 hover:text-blue-800">
-									{data.contactInfo.phone}
-								</a>
-							</div>
-						</div>
-						<div class="flex items-start">
-							<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-								</svg>
-							</div>
-							<div class="ml-4">
-								<h3 class="text-lg font-medium">El. paštas</h3>
-								<a href={`mailto:${data.contactInfo.email}`} class="text-blue-600 hover:text-blue-800">
-									{data.contactInfo.email}
-								</a>
-							</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-medium">{data.contactInfo.companyName}</h3>
+							<p class="text-gray-600">{data.contactInfo.address}</p>
 						</div>
 					</div>
-				</div>
-
-				<!-- Working Hours -->
-				<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-					<h2 class="text-2xl font-semibold mb-6">Darbo laikas</h2>
-					<div class="space-y-4">
-						{#each data.contactInfo.workingHours as { days, hours }}
-							<div class="flex justify-between items-center">
-								<span class="text-gray-600">{days}</span>
-								<span class="font-medium">{hours}</span>
-							</div>
-						{/each}
-					</div>
-				</div>
-
-				<!-- Social Media -->
-				<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-					<h2 class="text-2xl font-semibold mb-6">Socialiniai tinklai</h2>
-					<div class="flex space-x-4">
-						{#each data.contactInfo.socialMedia as { platform, url, icon }}
-							<a
-								href={url}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
-								title={platform}
-							>
-								{@html icon}
+					<div class="flex items-start">
+						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+							</svg>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-medium">Telefonas</h3>
+							<a href={`tel:${data.contactInfo.phone}`} class="text-blue-600 hover:text-blue-800">
+								{data.contactInfo.phone}
 							</a>
-						{/each}
+						</div>
 					</div>
+					<div class="flex items-start">
+						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+							</svg>
+						</div>
+						<div class="ml-4">
+							<h3 class="text-lg font-medium">El. paštas</h3>
+							<a href={`mailto:${data.contactInfo.email}`} class="text-blue-600 hover:text-blue-800">
+								{data.contactInfo.email}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Working Hours -->
+			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+				<h2 class="text-2xl font-semibold mb-6">Darbo laikas</h2>
+				<div class="space-y-4">
+					{#each data.contactInfo.workingHours as { days, hours }}
+						<div class="flex justify-between items-center">
+							<span class="text-gray-600">{days}</span>
+							<span class="font-medium">{hours}</span>
+						</div>
+					{/each}
+				</div>
+			</div>
+
+			<!-- Social Media -->
+			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+				<h2 class="text-2xl font-semibold mb-6">Socialiniai tinklai</h2>
+				<div class="flex space-x-4">
+					{#each data.contactInfo.socialMedia as { platform, url, icon }}
+						<a
+							href={url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
+							title={platform}
+						>
+							{@html icon}
+						</a>
+					{/each}
 				</div>
 			</div>
 		</div>
 
 		<!-- Map -->
-		<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+		<div class="mt-8 bg-white p-8 rounded-lg shadow-lg border border-gray-100">
 			<h2 class="text-2xl font-semibold mb-6">Mūsų lokacija</h2>
 			<div class="aspect-w-16 aspect-h-9">
 				<iframe
@@ -220,22 +224,13 @@
 		</div>
 	</div>
 </section>
+
 {#if success}
 	<p>✅ Kontaktų kredencialai sėkmingai atsiųsti</p>
 {/if}
 
-<!-- footer -->
-<footer class="bg-[#1f2937] text-white py-12 pb-4">
-	<div class="max-w-[1200px] mx-auto px-5">
-		<div class="grid gap-8 mb-8" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));">
-			<div class="footer-section">
-				<h3 class="mb-4 text-[var(--secondary-color)]">AGStatyba</h3>
-				<p data-translate="footer.description">Profesionalios statybų paslaugos. Kokybiški sprendimai jūsų projektams.</p>
-			</div>
-		</div>
-		
-		<div class="footer-bottom text-center pt-8 border-t border-[#374151] opacity-80">
-			<p>&copy; 2026 AGStatyba. <span data-translate="footer.rights">Visos teisės saugomos.</span></p>
-		</div>
-	</div>
-</footer>
+<style>
+	:global(body) {
+		background-color: white;
+	}
+</style>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Logo from "$lib/components/svg/Logo.svelte";
     import type { PortfolioItem } from '../../types/portfolio';
     
     export let data: { projects: PortfolioItem[] };

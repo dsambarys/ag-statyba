@@ -72,7 +72,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <div class="bg-gray-100 rounded-lg overflow-hidden h-96">
                 <img
-                    src="/images/sip/construction.jpg"
+                    src="/images/sip/c71913c94023d0d6bef6d68f66aed311_XL-860x484.jpg"
                     alt="SIP namo statyba"
                     class="w-full h-full object-cover"
                 />

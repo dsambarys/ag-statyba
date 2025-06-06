@@ -15,7 +15,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Service Cards -->
-            <a href="/paslaugos/staybos-darbai" class="group">
+            <a href="/paslaugos/statybos-darbai" class="group">
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-100 hover:border-blue-500 transition-all">
                     <h3 class="text-xl font-semibold mb-4">Statybos darbai</h3>
                     <p class="text-gray-600">Profesionalūs statybos darbai, atliekami pagal aukščiausius standartus</p>
@@ -43,7 +43,7 @@
                 </div>
             </a>
             
-            <a href="/paslaugos/konsultacija" class="group">
+            <a href="/paslaugos/konsultacijos" class="group">
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-100 hover:border-blue-500 transition-all">
                     <h3 class="text-xl font-semibold mb-4">Konsultacija</h3>
                     <p class="text-gray-600">Profesionalios konsultacijos statybų ir projektavimo klausimais</p>
