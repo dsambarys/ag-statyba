@@ -1,11 +1,41 @@
-<!-- typescript logo import -->
 <script lang="ts">
 	import Logo from "$lib/components/svg/Logo.svelte";
+
+    let name = '';
+  let email = '';
+  let message = '';
+  let success = false;
+
+  const handleSubmit = async () => {
+    const query = `
+      mutation SubmitContactForm($name: String!, $email: String!, $message: String!) {
+        submitContactForm(name: $name, email: $email, message: $message)
+      }
+    `;
+
+    const response = await fetch('http://localhost:4000/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: { name, email, message },
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.data?.submitContactForm) {
+      success = true;
+      name = email = message = '';
+    } else {
+      alert('Pateikti kontaktų kredencialus nepavyko');
+    }
+  };
 </script>
-        <!-- navbar  -->
-        
-        
-        <header class="fixed z-10 top-0 w-full shadow-md inset-x-0 border-b bg-white dark:bg-dark-background dark:border-gray-800">
+
+<header class="fixed z-10 top-0 w-full shadow-md inset-x-0 border-b bg-white dark:bg-dark-background dark:border-gray-800">
     <nav class="flex items-center justify-between max-w-5xl mx-auto px-4 h-24">
         <a href="/" class="flex items-center gap-2 font-bold">
             <Logo className="w-12 h-12" />
@@ -18,24 +48,24 @@
                     Paslaugos
                 </a>
                 <div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
-					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Statybos darbai</a>
-                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektavimas</a>
-                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Interjero dizainas</a>
-                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Autorinė priežiūra</a>
-                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Konsultacija</a>
-                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namo sąmata</a>
-                    <a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Kitos paslaugos</a>
+                    <a href="/paslaugos/staybos-darbai" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Statybos darbai</a>
+                    <a href="/paslaugos/namu-projektavimas" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektavimas</a>
+                    <a href="/paslaugos/interjero-prieziura" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Interjero dizainas</a>
+                    <a href="/paslaugos/autorine-prieziura" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Autorinė priežiūra</a>
+                    <a href="/paslaugos/konsultacija" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Konsultacija</a>
+                    <a href="/paslaugos/namo-samata" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namo sąmata</a>
+                    <a href="/paslaugos/kitos-paslaugos" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Kitos paslaugos</a>
                 </div>
             </div>
-			<div class="relative group">
-				<a href="/portfolio" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
-					Portfolio
-				</a>
-				<div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
-					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektai</a>
-					<a href="#" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų interjerai</a>
-				</div>
-			</div>
+            <div class="relative group">
+                <a href="/portfolio" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
+                    Portfolio
+                </a>
+                <div class="absolute hidden group-hover:block bg-gray-50 min-w-40 shadow-lg z-10 mx-5 my-2 mr-5 ml-5 rounded-lg">
+                    <a href="/portfolio/namu-projektai" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų projektai</a>
+                    <a href="/portfolio/namu-interjerai" class="block text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">Namų interjerai</a>
+                </div>
+            </div>
             <a href="/sip-namai" class="lock text-black px-4 py-3 no-underline text-left hover:bg-gray-200 transition-colors">
                 SIP namai
             </a>
@@ -50,7 +80,7 @@
             </a>
         </div>
     </nav>
-        </header>
+</header>
         <!-- end of navbar  -->
 
         <!-- header -->
@@ -64,7 +94,7 @@
         <!-- header -->
 
         <!-- contact section -->
-        <section class="py-20 bg-[#f9fafb]" role="region" aria-labelledby="contact-title">
+        <section class="py-20 bg-[#f9fafb]" aria-labelledby="contact-title">
     <div class="max-w-[1200px] mx-auto px-5 ">
         <div class="text-center mb-12">
             <h2 class="text-5xl font-bold" data-translate="contact.title">Susisiekite su mumis</h2>
@@ -109,7 +139,7 @@
             </div>
             
             <div class="contact-form">
-                <form id="contactForm" role="form" aria-labelledby="contact-form-title">
+                <form id="contactForm" aria-labelledby="contact-form-title">
                     <h3 id="contact-form-title" data-translate="contact.form.title">Susisiekimo forma</h3>
                     
                     <div class="form-row">
@@ -154,11 +184,14 @@
         </div>
     </div>
         </section>
+        {#if success}
+    <p>✅ Kontaktų kredencialai sėkmingai atsiųsti</p>
+  {/if}
         <!-- end of contact section -->
         
 
         <!-- footer -->
-        <footer class="bg-[#1f2937] text-white py-12 pb-4" role="contentinfo">
+        <footer class="bg-[#1f2937] text-white py-12 pb-4">
     <div class="max-w-[1200px] mx-auto px-5">
         <div class="grid gap-8 mb-8" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));">
             <div class="footer-section">
