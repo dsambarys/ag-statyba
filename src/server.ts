@@ -2,33 +2,38 @@
 import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
+import { typeDefs } from './lib/graphql/schema';
+import { resolvers } from './lib/graphql/resolvers';
+import { config } from './lib/config';
 import cors from 'cors';
-import { typeDefs } from './graphql/typeDefs';
-import { resolvers } from './graphql/resolvers';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Pool } from 'pg';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 const app = express();
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const db = drizzle(pool);
+const port = process.env.PORT || 3000;
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers: resolvers(db), // pass DB to resolvers
+const bootstrap = async () => {
+  // Create Apollo Server
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
+
+  // Start Apollo Server
+  await server.start();
+
+  // Apply middleware
+  app.use(cors());
+  app.use(express.json());
+  
+  // Apply Apollo middleware
+  app.use('/graphql', expressMiddleware(server));
+
+  // Start server
+  app.listen(port, () => {
+    console.log(`🚀 Server ready at http://localhost:${port}/graphql`);
+  });
+};
+
+bootstrap().catch((error) => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
 });
-
-await server.start();
-
-app.use(
-  '/graphql',
-  cors(),
-  express.json(),
-  expressMiddleware(server)
-);
-
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000/graphql`)
-);
