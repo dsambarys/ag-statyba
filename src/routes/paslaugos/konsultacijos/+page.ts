@@ -45,7 +45,7 @@ export const load: Load = async () => {
             'Galimybė konsultuotis nuotoliniu būdu',
             'Individualizuoti sprendimai'
         ],
-        imageUrl: '/images/services/consultation.jpg'
+        image: '/images/services/consultation.jpg'
     };
 
     return {

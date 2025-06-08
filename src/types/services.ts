@@ -4,7 +4,7 @@ export interface ServiceDetail {
     features?: string[];
     process?: ProcessStep[];
     benefits?: string[];
-    imageUrl?: string;
+    image?: string;
 }
 
 export interface ProcessStep {
