@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { t } from '$lib/i18n/translate';
+	import { currentLanguage, setLanguage } from '$lib/stores/language';
 	export let data;
 
 	let formData = {
@@ -85,24 +87,38 @@
 			loading = false;
 		}
 	};
+
+	const toggleLanguage = () => {
+		setLanguage($currentLanguage === 'lt' ? 'en' : 'lt');
+	};
 </script>
+
+<!-- Language Switcher -->
+<div class="fixed top-4 right-4 z-50">
+	<button
+		on:click={toggleLanguage}
+		class="bg-white px-4 py-2 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors flex items-center space-x-2"
+	>
+		<span class="font-medium">{$currentLanguage === 'lt' ? '🇱🇹 LT' : '🇬🇧 EN'}</span>
+	</button>
+</div>
 
 <!-- Hero Section with Centered Form -->
 <section class="min-h-screen bg-[#f9fafb] flex flex-col items-center justify-center py-20" aria-labelledby="contact-title">
 	<div class="max-w-[1200px] w-full mx-auto px-5">
 		<div class="text-center mb-12">
-			<h1 class="text-5xl font-bold" data-translate="contact.title">Susisiekite su mumis</h1>
-			<p class="mt-4 text-gray-600" data-translate="contact.subtitle">Pasiruošę atsakyti į jūsų klausimus ir aptarti projektus</p>
+			<h1 class="text-5xl font-bold">{t('contact.title')}</h1>
+			<p class="mt-4 text-gray-600">{t('contact.subtitle')}</p>
 		</div>
 		
 		<!-- Centered Contact Form -->
 		<div class="max-w-2xl mx-auto mb-20">
 			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">Parašykite mums</h2>
+				<h2 class="text-2xl font-semibold mb-6">{t('contact.form.title')}</h2>
 
 				{#if success}
 					<div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
-						✅ Jūsų žinutė sėkmingai išsiųsta. Susisieksime su jumis artimiausiu metu.
+						{t('contact.form.success')}
 					</div>
 				{/if}
 
@@ -116,7 +132,7 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 						<div>
 							<label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-								Vardas Pavardė *
+								{t('contact.form.name')} *
 							</label>
 							<input
 								type="text"
@@ -129,7 +145,7 @@
 						</div>
 						<div>
 							<label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-								El. paštas *
+								{t('contact.form.email')} *
 							</label>
 							<input
 								type="email"
@@ -144,7 +160,7 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 						<div>
 							<label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
-								Telefono numeris
+								{t('contact.form.phone')}
 							</label>
 							<input
 								type="tel"
@@ -156,7 +172,7 @@
 						</div>
 						<div>
 							<label for="subject" class="block text-sm font-medium text-gray-700 mb-1">
-								Tema *
+								{t('contact.form.subject')} *
 							</label>
 							<select
 								id="subject"
@@ -165,16 +181,16 @@
 								disabled={loading}
 								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
 							>
-								<option value="">Pasirinkite temą</option>
+								<option value="">{t('contact.form.subject')}</option>
 								{#each subjects as subject}
-									<option value={subject}>{subject}</option>
+									<option value={subject}>{t(`contact.subjects.${subject}`)}</option>
 								{/each}
 							</select>
 						</div>
 					</div>
 					<div>
 						<label for="message" class="block text-sm font-medium text-gray-700 mb-1">
-							Žinutė *
+							{t('contact.form.message')} *
 						</label>
 						<textarea
 							id="message"
@@ -196,9 +212,9 @@
 									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
 								</svg>
-								<span>Siunčiama...</span>
+								<span>{t('contact.form.sending')}</span>
 							{:else}
-								<span>Siųsti</span>
+								<span>{t('contact.form.send')}</span>
 							{/if}
 						</button>
 					</div>
@@ -214,7 +230,7 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			<!-- Company Info -->
 			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">Kontaktinė informacija</h2>
+				<h2 class="text-2xl font-semibold mb-6">{t('contact.info.title')}</h2>
 				<div class="space-y-4">
 					<div class="flex items-start">
 						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
@@ -234,7 +250,7 @@
 							</svg>
 						</div>
 						<div class="ml-4">
-							<h3 class="text-lg font-medium">Telefonas</h3>
+							<h3 class="text-lg font-medium">{t('contact.form.phone')}</h3>
 							<a href={`tel:${data.contactInfo.phone}`} class="text-blue-600 hover:text-blue-800">
 								{data.contactInfo.phone}
 							</a>
@@ -247,7 +263,7 @@
 							</svg>
 						</div>
 						<div class="ml-4">
-							<h3 class="text-lg font-medium">El. paštas</h3>
+							<h3 class="text-lg font-medium">{t('contact.form.email')}</h3>
 							<a href={`mailto:${data.contactInfo.email}`} class="text-blue-600 hover:text-blue-800">
 								{data.contactInfo.email}
 							</a>
@@ -258,7 +274,7 @@
 
 			<!-- Working Hours -->
 			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">Darbo laikas</h2>
+				<h2 class="text-2xl font-semibold mb-6">{t('contact.info.workingHours')}</h2>
 				<div class="space-y-4">
 					{#each data.contactInfo.workingHours as { days, hours }}
 						<div class="flex justify-between items-center">
@@ -271,7 +287,7 @@
 
 			<!-- Social Media -->
 			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">Socialiniai tinklai</h2>
+				<h2 class="text-2xl font-semibold mb-6">{t('contact.info.socialMedia')}</h2>
 				<div class="flex space-x-4">
 					{#each data.contactInfo.socialMedia as { platform, url, icon }}
 						<a
@@ -290,7 +306,7 @@
 
 		<!-- Map -->
 		<div class="mt-8 bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-			<h2 class="text-2xl font-semibold mb-6">Mūsų lokacija</h2>
+			<h2 class="text-2xl font-semibold mb-6">{t('contact.info.location')}</h2>
 			<div class="aspect-w-16 aspect-h-9">
 				<iframe
 					title="Location map"
