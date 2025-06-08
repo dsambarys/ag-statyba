@@ -4,6 +4,26 @@ type TranslationKey = {
 
 export const translations: Record<'en' | 'lt', TranslationKey> = {
     en: {
+        nav: {
+            services: 'Services',
+            portfolio: 'Portfolio',
+            sip_houses: 'SIP Houses',
+            prices: 'Prices',
+            contacts: 'Contacts',
+            services_submenu: {
+                construction: 'Construction Work',
+                house_design: 'House Design',
+                interior_design: 'Interior Design',
+                author_supervision: 'Author Supervision',
+                consultations: 'Consultations',
+                house_estimate: 'House Estimate',
+                other_services: 'Other Services'
+            },
+            portfolio_submenu: {
+                house_projects: 'House Projects',
+                house_interiors: 'House Interiors'
+            }
+        },
         contact: {
             title: 'Contact Us',
             subtitle: 'Ready to answer your questions and discuss projects',
@@ -35,6 +55,26 @@ export const translations: Record<'en' | 'lt', TranslationKey> = {
         }
     },
     lt: {
+        nav: {
+            services: 'Paslaugos',
+            portfolio: 'Portfolio',
+            sip_houses: 'SIP namai',
+            prices: 'Kainos',
+            contacts: 'Kontaktai',
+            services_submenu: {
+                construction: 'Statybos darbai',
+                house_design: 'Namų projektavimas',
+                interior_design: 'Interjero dizainas',
+                author_supervision: 'Autorinė priežiūra',
+                consultations: 'Konsultacijos',
+                house_estimate: 'Namo sąmata',
+                other_services: 'Kitos paslaugos'
+            },
+            portfolio_submenu: {
+                house_projects: 'Namų projektai',
+                house_interiors: 'Namų interjerai'
+            }
+        },
         contact: {
             title: 'Susisiekite su mumis',
             subtitle: 'Pasiruošę atsakyti į jūsų klausimus ir aptarti projektus',
