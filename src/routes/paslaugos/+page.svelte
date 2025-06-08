@@ -2,6 +2,8 @@
     import { fade } from 'svelte/transition';
 </script>
 
+
+
 <div class="min-h-screen bg-white">
     <!-- Header Section -->
     <div class="w-full text-center py-20 bg-white">

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Logo from "$lib/components/svg/Logo.svelte";
     import type { ServicePageData } from '../../../types/services';
+    import ServiceImage from '$lib/components/ServiceImage.svelte';
+    import { serviceImages } from '$lib/data/serviceImages';
     
     export let data: ServicePageData;
 
@@ -185,13 +187,13 @@
                 </div>
 
                 <!-- Image if available -->
-                {#if data.service.imageUrl}
-                    <img 
-                        src={data.service.imageUrl} 
-                        alt={data.service.title}
-                        class="w-full h-64 object-cover rounded-lg shadow-lg"
+                <div class="relative">
+                    <ServiceImage
+                        src={data.service.image || serviceImages.houseDesign.path}
+                        alt={serviceImages.houseDesign.alt.lt}
+                        className="w-full h-64 md:h-96"
                     />
-                {/if}
+                </div>
             </div>
         </div>
 

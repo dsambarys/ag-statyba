@@ -9,6 +9,10 @@
 		message: ''
 	};
 
+	let success = false;
+	let error: string | null = null;
+	let loading = false;
+
 	const subjects = [
 		'Namų projektavimas',
 		'Statybos darbai',
@@ -18,17 +22,68 @@
 		'Kita'
 	];
 
-	const handleSubmit = () => {
-		// Here you would typically handle form submission
-		console.log('Form submitted:', formData);
-		// Reset form after submission
-		formData = {
-			name: '',
-			email: '',
-			phone: '',
-			subject: '',
-			message: ''
-		};
+	const handleSubmit = async () => {
+		try {
+			loading = true;
+			error = null;
+
+			const response = await fetch('/graphql', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					query: `
+						mutation CreateContact($input: CreateContactInput!) {
+							createContact(input: $input) {
+								success
+								message
+								contact {
+									id
+									name
+									email
+									phone
+									subject
+									message
+								}
+							}
+						}
+					`,
+					variables: {
+						input: formData
+					}
+				})
+			});
+
+			const result = await response.json();
+
+			if (result.errors) {
+				throw new Error(result.errors[0].message);
+			}
+
+			if (result.data.createContact.success) {
+				success = true;
+				// Reset form
+				formData = {
+					name: '',
+					email: '',
+					phone: '',
+					subject: '',
+					message: ''
+				};
+
+				// Hide success message after 5 seconds
+				setTimeout(() => {
+					success = false;
+				}, 5000);
+			} else {
+				throw new Error(result.data.createContact.message || 'Failed to send message');
+			}
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'An unexpected error occurred';
+		} finally {
+			loading = false;
+		}
 	};
 </script>
 
@@ -44,6 +99,19 @@
 		<div class="max-w-2xl mx-auto mb-20">
 			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
 				<h2 class="text-2xl font-semibold mb-6">Parašykite mums</h2>
+
+				{#if success}
+					<div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+						✅ Jūsų žinutė sėkmingai išsiųsta. Susisieksime su jumis artimiausiu metu.
+					</div>
+				{/if}
+
+				{#if error}
+					<div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+						❌ {error}
+					</div>
+				{/if}
+
 				<form on:submit|preventDefault={handleSubmit} class="space-y-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 						<div>
@@ -55,7 +123,8 @@
 								id="name"
 								bind:value={formData.name}
 								required
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+								disabled={loading}
+								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
 							/>
 						</div>
 						<div>
@@ -67,7 +136,8 @@
 								id="email"
 								bind:value={formData.email}
 								required
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+								disabled={loading}
+								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
 							/>
 						</div>
 					</div>
@@ -80,7 +150,8 @@
 								type="tel"
 								id="phone"
 								bind:value={formData.phone}
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+								disabled={loading}
+								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
 							/>
 						</div>
 						<div>
@@ -91,7 +162,8 @@
 								id="subject"
 								bind:value={formData.subject}
 								required
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+								disabled={loading}
+								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
 							>
 								<option value="">Pasirinkite temą</option>
 								{#each subjects as subject}
@@ -108,16 +180,26 @@
 							id="message"
 							bind:value={formData.message}
 							required
+							disabled={loading}
 							rows="5"
-							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
 						></textarea>
 					</div>
 					<div class="text-right">
 						<button
 							type="submit"
-							class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+							disabled={loading}
+							class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
 						>
-							Siųsti
+							{#if loading}
+								<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+								</svg>
+								<span>Siunčiama...</span>
+							{:else}
+								<span>Siųsti</span>
+							{/if}
 						</button>
 					</div>
 				</form>
@@ -224,10 +306,6 @@
 		</div>
 	</div>
 </section>
-
-{#if success}
-	<p>✅ Kontaktų kredencialai sėkmingai atsiųsti</p>
-{/if}
 
 <style>
 	:global(body) {

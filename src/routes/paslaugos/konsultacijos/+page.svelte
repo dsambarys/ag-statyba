@@ -1,5 +1,7 @@
 <script lang="ts">
     import type { ServicePageData } from '../../../types/services';
+    import ServiceImage from '$lib/components/ServiceImage.svelte';
+    import { serviceImages } from '$lib/data/serviceImages';
     
     export let data: ServicePageData;
 
@@ -44,7 +46,13 @@
     ];
 </script>
 
-
+<div class="relative">
+    <ServiceImage
+        src={data.service.image || serviceImages.consultation.path}
+        alt={serviceImages.consultation.alt.lt}
+        className="w-full h-64 md:h-96"
+    />
+</div>
 
 <div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
@@ -137,15 +145,6 @@
                         {/each}
                     </div>
                 </div>
-
-                <!-- Image if available -->
-                {#if data.service.imageUrl}
-                    <img 
-                        src={data.service.imageUrl} 
-                        alt={data.service.title}
-                        class="w-full h-64 object-cover rounded-lg shadow-lg"
-                    />
-                {/if}
             </div>
         </div>
 

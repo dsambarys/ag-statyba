@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f3f4f6"/>
+  <g fill="#9ca3af">
+    <path d="M370 250h60v20h-60z"/>
+    <path d="M390 230h20v60h-20z"/>
+  </g>
+  <text x="400" y="350" font-family="Arial" font-size="16" text-anchor="middle" fill="#4b5563">
+    Image not found
+  </text>
+</svg> 
