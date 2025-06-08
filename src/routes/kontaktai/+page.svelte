@@ -104,26 +104,26 @@
 </div>
 
 <!-- Hero Section with Centered Form -->
-<section class="min-h-screen bg-[#f9fafb] flex flex-col items-center justify-center py-20" aria-labelledby="contact-title">
+<section class="min-h-screen bg-[#f9fafb] dark:bg-gray-900 flex flex-col items-center justify-center py-20" aria-labelledby="contact-title">
 	<div class="max-w-[1200px] w-full mx-auto px-5">
 		<div class="text-center mb-12">
-			<h1 class="text-5xl font-bold">{t('contact.title')}</h1>
-			<p class="mt-4 text-gray-600">{t('contact.subtitle')}</p>
+			<h1 class="text-5xl font-bold text-gray-900 dark:text-white">{t('contact.title')}</h1>
+			<p class="mt-4 text-gray-600 dark:text-gray-300">{t('contact.subtitle')}</p>
 		</div>
 		
 		<!-- Centered Contact Form -->
 		<div class="max-w-2xl mx-auto mb-20">
-			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">{t('contact.form.title')}</h2>
+			<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+				<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.form.title')}</h2>
 
 				{#if success}
-					<div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+					<div class="mb-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg text-green-700 dark:text-green-200">
 						{t('contact.form.success')}
 					</div>
 				{/if}
 
 				{#if error}
-					<div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+					<div class="mb-6 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg text-red-700 dark:text-red-200">
 						❌ {error}
 					</div>
 				{/if}
@@ -131,7 +131,7 @@
 				<form on:submit|preventDefault={handleSubmit} class="space-y-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 						<div>
-							<label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+							<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 								{t('contact.form.name')} *
 							</label>
 							<input
@@ -140,11 +140,11 @@
 								bind:value={formData.name}
 								required
 								disabled={loading}
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
 							/>
 						</div>
 						<div>
-							<label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+							<label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 								{t('contact.form.email')} *
 							</label>
 							<input
@@ -153,13 +153,13 @@
 								bind:value={formData.email}
 								required
 								disabled={loading}
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
 							/>
 						</div>
 					</div>
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 						<div>
-							<label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+							<label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 								{t('contact.form.phone')}
 							</label>
 							<input
@@ -167,11 +167,11 @@
 								id="phone"
 								bind:value={formData.phone}
 								disabled={loading}
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
 							/>
 						</div>
 						<div>
-							<label for="subject" class="block text-sm font-medium text-gray-700 mb-1">
+							<label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 								{t('contact.form.subject')} *
 							</label>
 							<select
@@ -179,7 +179,7 @@
 								bind:value={formData.subject}
 								required
 								disabled={loading}
-								class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
 							>
 								<option value="">{t('contact.form.subject')}</option>
 								{#each subjects as subject}
@@ -189,7 +189,7 @@
 						</div>
 					</div>
 					<div>
-						<label for="message" class="block text-sm font-medium text-gray-700 mb-1">
+						<label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 							{t('contact.form.message')} *
 						</label>
 						<textarea
@@ -198,7 +198,7 @@
 							required
 							disabled={loading}
 							rows="5"
-							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+							class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
 						></textarea>
 					</div>
 					<div class="text-right">
@@ -225,46 +225,46 @@
 </section>
 
 <!-- Additional Information Section -->
-<section class="bg-white py-20">
+<section class="bg-white dark:bg-gray-900 py-20">
 	<div class="max-w-[1200px] mx-auto px-5">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			<!-- Company Info -->
-			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">{t('contact.info.title')}</h2>
+			<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+				<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.info.title')}</h2>
 				<div class="space-y-4">
 					<div class="flex items-start">
-						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-300">
 							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
 							</svg>
 						</div>
 						<div class="ml-4">
-							<h3 class="text-lg font-medium">{data.contactInfo.companyName}</h3>
-							<p class="text-gray-600">{data.contactInfo.address}</p>
+							<h3 class="text-lg font-medium text-gray-900 dark:text-white">{data.contactInfo.companyName}</h3>
+							<p class="text-gray-600 dark:text-gray-300">{data.contactInfo.address}</p>
 						</div>
 					</div>
 					<div class="flex items-start">
-						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-300">
 							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
 							</svg>
 						</div>
 						<div class="ml-4">
-							<h3 class="text-lg font-medium">{t('contact.form.phone')}</h3>
-							<a href={`tel:${data.contactInfo.phone}`} class="text-blue-600 hover:text-blue-800">
+							<h3 class="text-lg font-medium text-gray-900 dark:text-white">{t('contact.form.phone')}</h3>
+							<a href={`tel:${data.contactInfo.phone}`} class="text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200">
 								{data.contactInfo.phone}
 							</a>
 						</div>
 					</div>
 					<div class="flex items-start">
-						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+						<div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-300">
 							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
 							</svg>
 						</div>
 						<div class="ml-4">
-							<h3 class="text-lg font-medium">{t('contact.form.email')}</h3>
-							<a href={`mailto:${data.contactInfo.email}`} class="text-blue-600 hover:text-blue-800">
+							<h3 class="text-lg font-medium text-gray-900 dark:text-white">{t('contact.form.email')}</h3>
+							<a href={`mailto:${data.contactInfo.email}`} class="text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200">
 								{data.contactInfo.email}
 							</a>
 						</div>
@@ -273,28 +273,28 @@
 			</div>
 
 			<!-- Working Hours -->
-			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">{t('contact.info.workingHours')}</h2>
+			<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+				<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.info.workingHours')}</h2>
 				<div class="space-y-4">
 					{#each data.contactInfo.workingHours as { days, hours }}
 						<div class="flex justify-between items-center">
-							<span class="text-gray-600">{days}</span>
-							<span class="font-medium">{hours}</span>
+							<span class="text-gray-600 dark:text-gray-300">{days}</span>
+							<span class="font-medium text-gray-900 dark:text-white">{hours}</span>
 						</div>
 					{/each}
 				</div>
 			</div>
 
 			<!-- Social Media -->
-			<div class="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-				<h2 class="text-2xl font-semibold mb-6">{t('contact.info.socialMedia')}</h2>
+			<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+				<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.info.socialMedia')}</h2>
 				<div class="flex space-x-4">
 					{#each data.contactInfo.socialMedia as { platform, url, icon }}
 						<a
 							href={url}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
+							class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
 							title={platform}
 						>
 							{@html icon}
@@ -305,8 +305,8 @@
 		</div>
 
 		<!-- Map -->
-		<div class="mt-8 bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-			<h2 class="text-2xl font-semibold mb-6">{t('contact.info.location')}</h2>
+		<div class="mt-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+			<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.info.location')}</h2>
 			<div class="aspect-w-16 aspect-h-9">
 				<iframe
 					title="Location map"
@@ -325,6 +325,6 @@
 
 <style>
 	:global(body) {
-		background-color: white;
+		@apply bg-white dark:bg-gray-900;
 	}
 </style>

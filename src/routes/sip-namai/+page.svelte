@@ -2,13 +2,13 @@
     export let data;
 </script>
 
-<div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-16">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">SIP Namai</h1>
-            <div class="w-24 h-0.5 bg-gray-300 mx-auto mb-8"></div>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">SIP Namai</h1>
+            <div class="w-24 h-0.5 bg-gray-300 dark:bg-gray-700 mx-auto mb-8"></div>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 Modernūs, energetiškai efektyvūs ir greitai statomi namai, naudojant struktūrinių izoliuotų plokščių (SIP) technologiją.
             </p>
         </div>
@@ -16,14 +16,14 @@
         <!-- Benefits Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {#each data.benefits as benefit}
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-100 hover:border-blue-500 transition-all">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:border-blue-500 transition-all">
                     <div class="flex items-center mb-4">
-                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-300">
                             {@html benefit.icon}
                         </div>
-                        <h3 class="ml-4 text-xl font-semibold">{benefit.title}</h3>
+                        <h3 class="ml-4 text-xl font-semibold text-gray-900 dark:text-white">{benefit.title}</h3>
                     </div>
-                    <p class="text-gray-600">{benefit.description}</p>
+                    <p class="text-gray-600 dark:text-gray-300">{benefit.description}</p>
                 </div>
             {/each}
         </div>

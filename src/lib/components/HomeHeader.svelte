@@ -1,12 +1,12 @@
 <section class="py-20 px-10 bg-gray-100 dark:bg-gray-900">
     <div class="py-6 space-y-5 m-10 p-10 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 class="text-4xl font-bold text-white">
+        <h2 class="text-4xl font-bold text-gray-900 dark:text-white">
             Sveiki atvykę į AGstatyba.lt – Jūsų patikimą partnerį statybų srityje.
         </h2>
-        <p class="text-4xl font-light text-white">
+        <p class="text-4xl font-light text-gray-700 dark:text-gray-300">
             Specializuojamės kokybiško būsto ir komercinių objektų statyboje visoje Lietuvoje. Mūsų paslaugos apima renovaciją, naujų objektų statybą, technines konsultacijas bei individualių projektų įgyvendinimą nuo idėjos iki rakto.
         </p>
-        <p class="text-2xl font-thin text-white">
+        <p class="text-2xl font-thin text-gray-600 dark:text-gray-400">
             Esame orientuoti į klientą, todėl kiekvienas projektas vykdomas atsakingai, laikantis terminų ir biudžeto.
         </p>
         <div class="flex flex-wrap justify-center gap-4">

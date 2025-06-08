@@ -54,13 +54,13 @@
     />
 </div>
 
-<div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-16">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">{data.service.title}</h1>
-            <div class="w-24 h-0.5 bg-gray-300 mx-auto mb-8"></div>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">{data.service.description}</p>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{data.service.title}</h1>
+            <div class="w-24 h-0.5 bg-gray-300 dark:bg-gray-700 mx-auto mb-8"></div>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">{data.service.description}</p>
         </div>
 
         <!-- Main Content -->
@@ -68,13 +68,13 @@
             <!-- Left Column -->
             <div class="space-y-8">
                 <!-- Features -->
-                <div class="bg-gray-50 p-8 rounded-lg">
-                    <h2 class="text-2xl font-semibold mb-6">Konsultacijų paslaugos</h2>
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Konsultacijų paslaugos</h2>
                     <ul class="space-y-4">
                         {#each data.service.features || [] as feature}
                             <li class="flex items-start">
-                                <span class="text-green-500 mr-3">✓</span>
-                                <span>{feature}</span>
+                                <span class="text-green-500 dark:text-green-400 mr-3">✓</span>
+                                <span class="text-gray-700 dark:text-gray-300">{feature}</span>
                             </li>
                         {/each}
                     </ul>
