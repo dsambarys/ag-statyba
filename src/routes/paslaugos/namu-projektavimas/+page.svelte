@@ -82,7 +82,7 @@
     </nav>
 </header>
 
-<div class="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white py-39 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-16">
