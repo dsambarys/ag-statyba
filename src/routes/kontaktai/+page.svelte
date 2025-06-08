@@ -294,7 +294,7 @@
 			<div class="aspect-w-16 aspect-h-9">
 				<iframe
 					title="Location map"
-					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d147636.3813106001!2d25.1799908!3d54.6870458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dd93fb5c6408f5%3A0x400d18c70e9dc40!2sVilnius!5e0!3m2!1sen!2slt!4v1234567890"
+					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d72481.55799545107!2d21.107636574650635!3d55.70345235622799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e4dbf2a5fa5b49%3A0xa00d18ec9ba72c0!2sKlaip%C4%97da!5e0!3m2!1sen!2slt!4v1710182400"
 					width="100%"
 					height="450"
 					style="border:0;"
