@@ -3,25 +3,39 @@ import { db } from '../db';
 import { contacts } from '../db/schema';
 import { sendEmail } from '../email';
 import { CreateContactInput } from './types';
-import { hashPassword, comparePasswords, createSession, validateSession, deleteSession } from '$lib/auth/utils';
+import { verifyToken, hashPassword, comparePasswords, generateToken, createSession, validateSession, deleteSession } from '$lib/auth/utils';
 import type { JWTPayload } from '$lib/auth/utils';
 import type { Context } from './context';
 
 export const resolvers = {
   Query: {
     contacts: async (_parent: any, { status }: { status?: string }, context: Context) => {
-      const session = await validateSession(context.db, context.token);
-      if (!session || session.role !== 'ADMIN') {
-        throw new Error('Unauthorized');
+      try {
+        if (!context.token) {
+          throw new Error('Not authenticated');
+        }
+
+        const payload = verifyToken(context.token);
+        const userResult = await context.db.query(
+          'SELECT role FROM users WHERE id = $1',
+          [payload.userId]
+        );
+
+        if (userResult.rows[0]?.role !== 'ADMIN') {
+          throw new Error('Not authorized');
+        }
+
+        const query = status
+          ? 'SELECT * FROM contacts WHERE status = $1 ORDER BY created_at DESC'
+          : 'SELECT * FROM contacts ORDER BY created_at DESC';
+        const values = status ? [status] : [];
+
+        const result = await context.db.query(query, values);
+        return result.rows;
+      } catch (error) {
+        console.error('Error in contacts resolver:', error);
+        throw error;
       }
-
-      const query = status
-        ? 'SELECT * FROM contacts WHERE status = $1 ORDER BY created_at DESC'
-        : 'SELECT * FROM contacts ORDER BY created_at DESC';
-      const values = status ? [status] : [];
-
-      const result = await context.db.query(query, values);
-      return result.rows;
     },
     contact: async (_parent: any, { id }: { id: string }, context: Context) => {
       const session = await validateSession(context.db, context.token);
@@ -36,79 +50,106 @@ export const resolvers = {
       return result.rows[0] || null;
     },
     me: async (_parent: any, _args: any, context: Context) => {
-      const session = await validateSession(context.db, context.token);
-      if (!session) {
-        return null;
-      }
+      try {
+        if (!context.token) {
+          throw new Error('Not authenticated');
+        }
 
-      const result = await context.db.query(
-        'SELECT * FROM users WHERE id = $1',
-        [session.userId]
-      );
-      return result.rows[0] || null;
+        const payload = verifyToken(context.token);
+        const result = await context.db.query(
+          'SELECT id, email, role FROM users WHERE id = $1',
+          [payload.userId]
+        );
+
+        if (result.rows.length === 0) {
+          throw new Error('User not found');
+        }
+
+        return result.rows[0];
+      } catch (error) {
+        console.error('Error in me resolver:', error);
+        throw error;
+      }
     }
   },
   Mutation: {
     createContact: async (_parent: any, { input }: { input: any }, context: Context) => {
-      const { name, email, phone, subject, message } = input;
+      try {
+        const { name, email, phone, subject, message } = input;
+        const result = await context.db.query(
+          'INSERT INTO contacts (name, email, phone, subject, message, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+          [name, email, phone, subject, message, 'PENDING']
+        );
 
-      const result = await context.db.query(
-        `INSERT INTO contacts (name, email, phone, subject, message)
-         VALUES ($1, $2, $3, $4, $5)
-         RETURNING *`,
-        [name, email, phone, subject, message]
-      );
-
-      return result.rows[0];
+        return result.rows[0];
+      } catch (error) {
+        console.error('Error in createContact resolver:', error);
+        throw error;
+      }
     },
     updateContactStatus: async (_parent: any, { id, status }: { id: string, status: string }, context: Context) => {
-      const session = await validateSession(context.db, context.token);
-      if (!session || session.role !== 'ADMIN') {
-        throw new Error('Unauthorized');
+      try {
+        if (!context.token) {
+          throw new Error('Not authenticated');
+        }
+
+        const payload = verifyToken(context.token);
+        const userResult = await context.db.query(
+          'SELECT role FROM users WHERE id = $1',
+          [payload.userId]
+        );
+
+        if (userResult.rows[0]?.role !== 'ADMIN') {
+          throw new Error('Not authorized');
+        }
+
+        const result = await context.db.query(
+          'UPDATE contacts SET status = $1 WHERE id = $2 RETURNING *',
+          [status, id]
+        );
+
+        if (result.rows.length === 0) {
+          throw new Error('Contact not found');
+        }
+
+        return result.rows[0];
+      } catch (error) {
+        console.error('Error in updateContactStatus resolver:', error);
+        throw error;
       }
-
-      const result = await context.db.query(
-        `UPDATE contacts
-         SET status = $1
-         WHERE id = $2
-         RETURNING *`,
-        [status, id]
-      );
-
-      if (result.rows.length === 0) {
-        throw new Error('Contact not found');
-      }
-
-      return result.rows[0];
     },
     login: async (_parent: any, { input }: { input: any }, context: Context) => {
-      const { email, password } = input;
+      try {
+        const { email, password } = input;
+        const result = await context.db.query(
+          'SELECT * FROM users WHERE email = $1',
+          [email]
+        );
 
-      const result = await context.db.query(
-        'SELECT * FROM users WHERE email = $1',
-        [email]
-      );
-
-      const user = result.rows[0];
-      if (!user) {
-        throw new Error('Invalid email or password');
-      }
-
-      const validPassword = await comparePasswords(password, user.password_hash);
-      if (!validPassword) {
-        throw new Error('Invalid email or password');
-      }
-
-      const token = await createSession(context.db, user.id);
-
-      return {
-        token,
-        user: {
-          id: user.id,
-          email: user.email,
-          role: user.role
+        if (result.rows.length === 0) {
+          throw new Error('Invalid credentials');
         }
-      };
+
+        const user = result.rows[0];
+        const isValid = await comparePasswords(password, user.password_hash);
+
+        if (!isValid) {
+          throw new Error('Invalid credentials');
+        }
+
+        const token = generateToken(user.id);
+        return {
+          token,
+          user: {
+            id: user.id,
+            email: user.email,
+            role: user.role
+          }
+        };
+      } catch (error) {
+        console.error('Error in login resolver:', error);
+        throw error;
+      }
     },
     register: async (_parent: any, { input }: { input: any }, context: Context) => {
       const { email, password } = input;
@@ -145,12 +186,18 @@ export const resolvers = {
       };
     },
     logout: async (_parent: any, _args: any, context: Context) => {
-      if (!context.token) {
-        return true;
-      }
+      try {
+        if (!context.token) {
+          throw new Error('Not authenticated');
+        }
 
-      await deleteSession(context.db, context.token);
-      return true;
+        // In a real application, you might want to invalidate the token here
+        await deleteSession(context.db, context.token);
+        return true;
+      } catch (error) {
+        console.error('Error in logout resolver:', error);
+        throw error;
+      }
     }
   }
 }; 
