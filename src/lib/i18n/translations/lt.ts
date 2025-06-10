@@ -1,10 +1,24 @@
 export default {
+    common: {
+        switchLanguage: 'Pakeisti kalbą',
+        toggleTheme: 'Pakeisti temą',
+        darkMode: 'Tamsi tema',
+        lightMode: 'Šviesi tema'
+    },
     navigation: {
         home: 'Pradžia',
         services: 'Paslaugos',
         portfolio: 'Portfolio',
         prices: 'Kainos',
         contacts: 'Kontaktai'
+    },
+    portfolio: {
+        title: 'Mūsų projektai',
+        subtitle: 'Susipažinkite su mūsų įgyvendintais projektais',
+        all: 'Visi projektai',
+        residential: 'Gyvenamieji namai',
+        commercial: 'Komerciniai projektai',
+        sip: 'SIP namai'
     },
     projects: {
         title: 'Namų projektai',
