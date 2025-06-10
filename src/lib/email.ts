@@ -1,28 +1,32 @@
 import nodemailer from 'nodemailer';
 import { config } from './config';
+import { dev } from '$app/environment';
 
-const transporter = nodemailer.createTransport({
-  host: config.email.host,
-  port: config.email.port,
-  secure: config.email.port === 465,
-  auth: {
-    user: config.email.user,
-    pass: config.email.pass
-  }
-});
+export async function sendEmail(to: string, subject: string, text: string) {
+    if (!config.email && dev) {
+        console.log('Email sending is disabled in development mode');
+        console.log('Would have sent:', { to, subject, text });
+        return;
+    }
 
-interface SendEmailParams {
-  subject: string;
-  text: string;
-  html?: string;
-}
+    if (!config.email) {
+        throw new Error('Email configuration is not set up');
+    }
 
-export const sendEmail = async ({ subject, text, html }: SendEmailParams) => {
-  await transporter.sendMail({
-    from: config.email.from,
-    to: config.email.user,
-    subject,
-    text,
-    html
-  });
-}; 
+    const transporter = nodemailer.createTransport({
+        host: config.email.host,
+        port: config.email.port,
+        secure: config.email.secure,
+        auth: {
+            user: config.email.user,
+            pass: config.email.pass
+        }
+    });
+
+    await transporter.sendMail({
+        from: config.email.from,
+        to,
+        subject,
+        text
+    });
+} 
