@@ -1,0 +1,68 @@
+type Contact {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String
+  subject: String!
+  message: String!
+  status: ContactStatus!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum ContactStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+type User {
+  id: ID!
+  email: String!
+  role: UserRole!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input CreateContactInput {
+  name: String!
+  email: String!
+  phone: String
+  subject: String!
+  message: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+}
+
+type Query {
+  contacts(status: ContactStatus): [Contact!]!
+  contact(id: ID!): Contact
+  me: User
+}
+
+type Mutation {
+  createContact(input: CreateContactInput!): Contact!
+  updateContactStatus(id: ID!, status: ContactStatus!): Contact!
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+  logout: Boolean!
+} 

@@ -8,6 +8,11 @@ interface PricingTier {
     note?: string;
 }
 
+interface Feature {
+    title: string;
+    description: string;
+}
+
 export const load: Load = async () => {
     const pricingTiers: PricingTier[] = [
         {
@@ -82,7 +87,21 @@ export const load: Load = async () => {
         description: 'Norėdami sužinoti, kiek kainuoja namo projektas, kokia projekto sudėtis, kas įskaičiuota į kainą, o kas dar papildomai kainuotu – šioje skiltyje rasite bendriniu atveju taikomas projektavimo kainas. Norint gauti individualaus namo projekto kainos pasiūlymą – parašykite mums laišką į info@akubu.lt',
         instructions: 'Laiške paminėkite, kokios kvadratūros bei stilistikos namo norite, iš ko norite statyti, pridėkite sklypo dokumentus (nekilnojamojo turto registro duomenų bazės išrašas, kadastrinis sklypo planas, detalusis planas/ formavimo pertvarkymo projektas). Taip galėsime pilnai įvertinti darbų apimtis ir pateikti projektavimo darbų pasiūlymą.',
         note: '* Kainos nurodytos be PVM + SK (statybos kaina)',
-        contactEmail: 'info@akubu.lt'
+        contactEmail: 'info@akubu.lt',
+        features: [
+            {
+                title: 'Projektavimo terminai',
+                description: 'Tipinio namo projektas - 2-3 mėnesiai, individualaus - 3-4 mėnesiai'
+            },
+            {
+                title: 'Mokėjimo sąlygos',
+                description: 'Galimas mokėjimas dalimis pagal atliktus darbus'
+            },
+            {
+                title: 'Papildomos paslaugos',
+                description: 'Sklypo planavimas, interjero projektavimas, statybos priežiūra'
+            }
+        ]
     };
 
     return {

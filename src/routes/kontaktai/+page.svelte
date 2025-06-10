@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n/translate';
-	import { currentLanguage, setLanguage } from '$lib/stores/language';
+	import { currentLanguage } from '$lib/stores/language';
+	import ThemeLanguageControls from '$lib/components/ThemeLanguageControls.svelte';
+	import { onMount } from 'svelte';
 	export let data;
 
 	let formData = {
@@ -14,6 +16,9 @@
 	let success = false;
 	let error: string | null = null;
 	let loading = false;
+	let isAuthenticated = false;
+	let isAdmin = false;
+	let contacts: any[] = [];
 
 	const subjects = [
 		'Namų projektavimas',
@@ -23,6 +28,79 @@
 		'Konsultacija',
 		'Kita'
 	];
+
+	onMount(async () => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			try {
+				const response = await fetch('/graphql', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					},
+					body: JSON.stringify({
+						query: `
+							query {
+								me {
+									id
+									email
+									role
+								}
+							}
+						`
+					})
+				});
+
+				const result = await response.json();
+				if (result.data?.me) {
+					isAuthenticated = true;
+					isAdmin = result.data.me.role === 'ADMIN';
+					if (isAdmin) {
+						await loadContacts();
+					}
+				}
+			} catch (err) {
+				console.error('Error checking authentication:', err);
+			}
+		}
+	});
+
+	const loadContacts = async () => {
+		try {
+			const token = localStorage.getItem('token');
+			const response = await fetch('/graphql', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					query: `
+						query {
+							contacts {
+								id
+								name
+								email
+								phone
+								subject
+								message
+								status
+								createdAt
+							}
+						}
+					`
+				})
+			});
+
+			const result = await response.json();
+			if (result.data?.contacts) {
+				contacts = result.data.contacts;
+			}
+		} catch (err) {
+			console.error('Error loading contacts:', err);
+		}
+	};
 
 	const handleSubmit = async () => {
 		try {
@@ -38,16 +116,12 @@
 					query: `
 						mutation CreateContact($input: CreateContactInput!) {
 							createContact(input: $input) {
-								success
+								id
+								name
+								email
+								phone
+								subject
 								message
-								contact {
-									id
-									name
-									email
-									phone
-									subject
-									message
-								}
 							}
 						}
 					`,
@@ -63,24 +137,24 @@
 				throw new Error(result.errors[0].message);
 			}
 
-			if (result.data.createContact.success) {
-				success = true;
-				// Reset form
-				formData = {
-					name: '',
-					email: '',
-					phone: '',
-					subject: '',
-					message: ''
-				};
+			success = true;
+			// Reset form
+			formData = {
+				name: '',
+				email: '',
+				phone: '',
+				subject: '',
+				message: ''
+			};
 
-				// Hide success message after 5 seconds
-				setTimeout(() => {
-					success = false;
-				}, 5000);
-			} else {
-				throw new Error(result.data.createContact.message || 'Failed to send message');
+			if (isAdmin) {
+				await loadContacts();
 			}
+
+			// Hide success message after 5 seconds
+			setTimeout(() => {
+				success = false;
+			}, 5000);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'An unexpected error occurred';
 		} finally {
@@ -88,20 +162,120 @@
 		}
 	};
 
-	const toggleLanguage = () => {
-		setLanguage($currentLanguage === 'lt' ? 'en' : 'lt');
+	const updateContactStatus = async (id: string, status: string) => {
+		try {
+			const token = localStorage.getItem('token');
+			const response = await fetch('/graphql', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					query: `
+						mutation UpdateContactStatus($id: ID!, $status: ContactStatus!) {
+							updateContactStatus(id: $id, status: $status) {
+								id
+								status
+							}
+						}
+					`,
+					variables: {
+						id,
+						status
+					}
+				})
+			});
+
+			const result = await response.json();
+			if (result.errors) {
+				throw new Error(result.errors[0].message);
+			}
+
+			await loadContacts();
+		} catch (err) {
+			console.error('Error updating contact status:', err);
+		}
+	};
+
+	const handleLogin = async (event: Event) => {
+		event.preventDefault();
+		const form = event.target as HTMLFormElement;
+		const formData = new FormData(form);
+		
+		try {
+			const response = await fetch('/graphql', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					query: `
+						mutation Login($input: LoginInput!) {
+							login(input: $input) {
+								token
+								user {
+									id
+									email
+									role
+								}
+							}
+						}
+					`,
+					variables: {
+						input: {
+							email: formData.get('email'),
+							password: formData.get('password')
+						}
+					}
+				})
+			});
+
+			const result = await response.json();
+			if (result.errors) {
+				throw new Error(result.errors[0].message);
+			}
+
+			localStorage.setItem('token', result.data.login.token);
+			isAuthenticated = true;
+			isAdmin = result.data.login.user.role === 'ADMIN';
+			if (isAdmin) {
+				await loadContacts();
+			}
+		} catch (err) {
+			error = err instanceof Error ? err.message : 'An unexpected error occurred';
+		}
+	};
+
+	const handleLogout = async () => {
+		try {
+			const token = localStorage.getItem('token');
+			await fetch('/graphql', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					query: `
+						mutation {
+							logout
+						}
+					`
+				})
+			});
+
+			localStorage.removeItem('token');
+			isAuthenticated = false;
+			isAdmin = false;
+			contacts = [];
+		} catch (err) {
+			console.error('Error logging out:', err);
+		}
 	};
 </script>
 
-<!-- Language Switcher -->
-<div class="fixed top-4 right-4 z-50">
-	<button
-		on:click={toggleLanguage}
-		class="bg-white px-4 py-2 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors flex items-center space-x-2"
-	>
-		<span class="font-medium">{$currentLanguage === 'lt' ? '🇱🇹 LT' : '🇬🇧 EN'}</span>
-	</button>
-</div>
+<ThemeLanguageControls />
 
 <!-- Hero Section with Centered Form -->
 <section class="min-h-screen bg-[#f9fafb] dark:bg-gray-900 flex flex-col items-center justify-center py-20" aria-labelledby="contact-title">
@@ -111,116 +285,213 @@
 			<p class="mt-4 text-gray-600 dark:text-gray-300">{t('contact.subtitle')}</p>
 		</div>
 		
-		<!-- Centered Contact Form -->
-		<div class="max-w-2xl mx-auto mb-20">
-			<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
-				<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.form.title')}</h2>
+		{#if !isAuthenticated}
+			<!-- Contact Form -->
+			<div class="max-w-2xl mx-auto mb-20">
+				<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+					<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{t('contact.form.title')}</h2>
 
-				{#if success}
-					<div class="mb-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg text-green-700 dark:text-green-200">
-						{t('contact.form.success')}
-					</div>
-				{/if}
+					{#if success}
+						<div class="mb-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg text-green-700 dark:text-green-200">
+							{t('contact.form.success')}
+						</div>
+					{/if}
 
-				{#if error}
-					<div class="mb-6 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg text-red-700 dark:text-red-200">
-						❌ {error}
-					</div>
-				{/if}
+					{#if error}
+						<div class="mb-6 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg text-red-700 dark:text-red-200">
+							❌ {error}
+						</div>
+					{/if}
 
-				<form on:submit|preventDefault={handleSubmit} class="space-y-6">
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-						<div>
-							<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								{t('contact.form.name')} *
-							</label>
-							<input
-								type="text"
-								id="name"
-								bind:value={formData.name}
-								required
-								disabled={loading}
-								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
-							/>
+					<form on:submit|preventDefault={handleSubmit} class="space-y-6">
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+							<div>
+								<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+									{t('contact.form.name')} *
+								</label>
+								<input
+									type="text"
+									id="name"
+									bind:value={formData.name}
+									required
+									disabled={loading}
+									class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+								/>
+							</div>
+							<div>
+								<label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+									{t('contact.form.email')} *
+								</label>
+								<input
+									type="email"
+									id="email"
+									bind:value={formData.email}
+									required
+									disabled={loading}
+									class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+								/>
+							</div>
+						</div>
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+							<div>
+								<label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+									{t('contact.form.phone')}
+								</label>
+								<input
+									type="tel"
+									id="phone"
+									bind:value={formData.phone}
+									disabled={loading}
+									class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+								/>
+							</div>
+							<div>
+								<label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+									{t('contact.form.subject')} *
+								</label>
+								<select
+									id="subject"
+									bind:value={formData.subject}
+									required
+									disabled={loading}
+									class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+								>
+									<option value="">{t('contact.form.subject')}</option>
+									{#each subjects as subject}
+										<option value={subject}>{t(`contact.subjects.${subject}`)}</option>
+									{/each}
+								</select>
+							</div>
 						</div>
 						<div>
-							<label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								{t('contact.form.email')} *
+							<label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+								{t('contact.form.message')} *
 							</label>
+							<textarea
+								id="message"
+								bind:value={formData.message}
+								required
+								disabled={loading}
+								rows="5"
+								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+							></textarea>
+						</div>
+						<div class="text-right">
+							<button
+								type="submit"
+								disabled={loading}
+								class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+							>
+								{#if loading}
+									<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									</svg>
+									<span>{t('contact.form.sending')}</span>
+								{:else}
+									<span>{t('contact.form.send')}</span>
+								{/if}
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- Login Form -->
+			<div class="max-w-md mx-auto">
+				<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+					<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Admin Login</h2>
+					<form on:submit={handleLogin} class="space-y-4">
+						<div>
+							<label for="login-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
 							<input
 								type="email"
-								id="email"
-								bind:value={formData.email}
+								id="login-email"
+								name="email"
 								required
-								disabled={loading}
-								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+								class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 							/>
 						</div>
-					</div>
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 						<div>
-							<label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								{t('contact.form.phone')}
-							</label>
+							<label for="login-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
 							<input
-								type="tel"
-								id="phone"
-								bind:value={formData.phone}
-								disabled={loading}
-								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+								type="password"
+								id="login-password"
+								name="password"
+								required
+								class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 							/>
 						</div>
-						<div>
-							<label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								{t('contact.form.subject')} *
-							</label>
-							<select
-								id="subject"
-								bind:value={formData.subject}
-								required
-								disabled={loading}
-								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
-							>
-								<option value="">{t('contact.form.subject')}</option>
-								{#each subjects as subject}
-									<option value={subject}>{t(`contact.subjects.${subject}`)}</option>
-								{/each}
-							</select>
-						</div>
-					</div>
-					<div>
-						<label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-							{t('contact.form.message')} *
-						</label>
-						<textarea
-							id="message"
-							bind:value={formData.message}
-							required
-							disabled={loading}
-							rows="5"
-							class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
-						></textarea>
-					</div>
-					<div class="text-right">
 						<button
 							type="submit"
-							disabled={loading}
-							class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+							class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
 						>
-							{#if loading}
-								<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-								</svg>
-								<span>{t('contact.form.sending')}</span>
-							{:else}
-								<span>{t('contact.form.send')}</span>
-							{/if}
+							Login
+						</button>
+					</form>
+				</div>
+			</div>
+		{:else}
+			<!-- Admin Panel -->
+			<div class="max-w-6xl mx-auto">
+				<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
+					<div class="flex justify-between items-center mb-6">
+						<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Contact Submissions</h2>
+						<button
+							on:click={handleLogout}
+							class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+						>
+							Logout
 						</button>
 					</div>
-				</form>
+
+					<div class="overflow-x-auto">
+						<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead class="bg-gray-50 dark:bg-gray-900">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Subject</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+								{#each contacts as contact}
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">{contact.name}</td>
+										<td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">{contact.email}</td>
+										<td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">{contact.subject}</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											<span class={`px-2 py-1 rounded-full text-xs font-medium
+												${contact.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : ''}
+												${contact.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : ''}
+												${contact.status === 'COMPLETED' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : ''}
+												${contact.status === 'REJECTED' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : ''}
+											`}>
+												{contact.status}
+											</span>
+										</td>
+										<td class="px-6 py-4 whitespace-nowrap">
+											<select
+												value={contact.status}
+												on:change={(e) => updateContactStatus(contact.id, e.target.value)}
+												class="rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+											>
+												<option value="PENDING">Pending</option>
+												<option value="IN_PROGRESS">In Progress</option>
+												<option value="COMPLETED">Completed</option>
+												<option value="REJECTED">Rejected</option>
+											</select>
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-		</div>
+		{/if}
 	</div>
 </section>
 

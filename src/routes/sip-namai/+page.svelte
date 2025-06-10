@@ -1,6 +1,9 @@
 <script lang="ts">
+    import ThemeLanguageControls from '$lib/components/ThemeLanguageControls.svelte';
     export let data;
 </script>
+
+<ThemeLanguageControls />
 
 <div class="min-h-screen bg-white dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
