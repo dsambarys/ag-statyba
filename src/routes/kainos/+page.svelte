@@ -5,7 +5,6 @@
 	export let data;
 
 	let selectedTier = null;
-	let showContactForm = false;
 	let showPaymentForm = false;
 	let stripe;
 	let elements;
@@ -16,61 +15,102 @@
 
 	// Initialize Stripe
 	async function initializeStripe() {
-		stripe = await loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
+		try {
+			if (!stripe) {
+				stripe = await loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
+			}
+			return stripe;
+		} catch (error) {
+			console.error('Error initializing Stripe:', error);
+			errorMessage = 'Failed to initialize payment system';
+			return null;
+		}
 	}
 
 	// Handle tier selection
 	const handleTierSelect = async (tier) => {
 		selectedTier = tier;
 		showPaymentForm = true;
-		await initializeStripe();
-		await createPaymentIntent(tier.price);
+		errorMessage = '';
+		
+		try {
+			await createPaymentIntent(tier.price);
+		} catch (error) {
+			console.error('Error in handleTierSelect:', error);
+			errorMessage = error.message || 'Failed to initialize payment. Please try again.';
+		}
 	};
 
 	// Create payment intent
 	async function createPaymentIntent(amount: number) {
-		try {
-			const response = await fetch('/api/create-payment-intent', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ amount })
-			});
-
-			const data = await response.json();
-			if (data.error) {
-				throw new Error(data.error);
-			}
-
-			clientSecret = data.clientSecret;
-			const { elements: stripeElements } = await stripe.elements({
-				clientSecret,
-				appearance: {
-					theme: 'stripe',
-					variables: {
-						colorPrimary: '#3b82f6'
-					}
-				}
-			});
-
-			paymentElement = stripeElements.create('payment');
-			paymentElement.mount('#payment-element');
-		} catch (error) {
-			console.error('Error:', error);
-			errorMessage = 'Failed to initialize payment. Please try again.';
+		// Initialize Stripe first
+		stripe = await initializeStripe();
+		if (!stripe) {
+			throw new Error('Failed to initialize Stripe');
 		}
+
+		// Create payment intent
+		const response = await fetch('/api/create-payment-intent', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ amount })
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to create payment intent');
+		}
+
+		const data = await response.json();
+		if (data.error) {
+			throw new Error(data.error);
+		}
+
+		clientSecret = data.clientSecret;
+		if (!clientSecret) {
+			throw new Error('No client secret received');
+		}
+
+		// Create Elements instance
+		elements = stripe.elements({
+			clientSecret,
+			appearance: {
+				theme: 'stripe',
+				variables: {
+					colorPrimary: '#3b82f6'
+				}
+			}
+		});
+
+		// Create and mount the Payment Element
+		if (paymentElement) {
+			paymentElement.destroy();
+		}
+		paymentElement = elements.create('payment');
+		paymentElement.mount('#payment-element');
 	}
 
 	// Handle payment submission
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
+		
+		if (!stripe || !elements || !clientSecret) {
+			console.error('Missing required payment components:', {
+				stripe: !!stripe,
+				elements: !!elements,
+				clientSecret: !!clientSecret
+			});
+			errorMessage = 'Payment system not initialized. Please try again.';
+			return;
+		}
+
 		processing = true;
 		errorMessage = '';
 
 		try {
 			const { error } = await stripe.confirmPayment({
-				elements: paymentElement,
+				elements,
 				confirmParams: {
 					return_url: `${window.location.origin}/payment-success`
 				}
@@ -80,7 +120,7 @@
 				throw error;
 			}
 		} catch (error) {
-			console.error('Error:', error);
+			console.error('Error in handleSubmit:', error);
 			errorMessage = error.message || 'An error occurred during payment.';
 		} finally {
 			processing = false;
@@ -95,6 +135,17 @@
 			maximumFractionDigits: 0
 		}).format(price);
 	};
+
+	// Cleanup function
+	function cleanup() {
+		if (paymentElement) {
+			paymentElement.destroy();
+			paymentElement = null;
+		}
+		clientSecret = null;
+		elements = null;
+		errorMessage = '';
+	}
 </script>
 
 <ThemeLanguageControls />
@@ -187,7 +238,10 @@
                         <div class="flex justify-end space-x-4">
                             <button
                                 type="button"
-                                on:click={() => showPaymentForm = false}
+                                on:click={() => {
+                                    showPaymentForm = false;
+                                    cleanup();
+                                }}
                                 class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                                 disabled={processing}
                             >
