@@ -28,7 +28,7 @@ export const load: Load = async () => {
                 'Elektrotechnikos dalis',
                 'Vėdinimo dalis'
             ],
-            image: 'https://placehold.co/800x600?text=Tipinis+vienbutis'
+            image: 'images/th-1413030994.jpg'
         },
         {
             type: 'Tipinis dvibutis',
@@ -42,7 +42,7 @@ export const load: Load = async () => {
                 'Elektrotechnikos dalis',
                 'Vėdinimo dalis'
             ],
-            image: 'https://placehold.co/800x600?text=Tipinis+dvibutis'
+            image: 'images/ID-261-vienbutis-namas-7-1019277480.jpg'
         },
         {
             type: 'Individualus iki 100 m²',
@@ -56,7 +56,7 @@ export const load: Load = async () => {
                 'Projekto derinimas',
                 'Autorinė priežiūra'
             ],
-            image: 'https://placehold.co/800x600?text=Individualus+iki+100m2'
+            image: 'images/viebutis-namas-8-341201879.jpg'
         },
         {
             type: 'Individualus vienbutis iki 300 m²',
@@ -70,7 +70,7 @@ export const load: Load = async () => {
                 'Projekto derinimas',
                 'Autorinė priežiūra'
             ],
-            image: 'https://placehold.co/800x600?text=Individualus+vienbutis+iki+300m2'
+            image: 'images/1-28979557322.JPG'
         },
         {
             type: 'Individualus dvibutis iki 300 m²',
@@ -84,7 +84,7 @@ export const load: Load = async () => {
                 'Projekto derinimas',
                 'Autorinė priežiūra'
             ],
-            image: 'https://placehold.co/800x600?text=Individualus+dvibutis+iki+300m2'
+            image: 'images/th-1357771939.jpg'
         }
     ];
 
