@@ -20,15 +20,19 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy built assets from builder
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/package*.json ./
+# Copy package files
+COPY package*.json ./
 
 # Install production dependencies only
 RUN npm install --production
 
-# Expose the port
+# Copy built application from builder stage
+COPY --from=builder /app/build /app/build
+COPY --from=builder /app/.svelte-kit /app/.svelte-kit
+COPY --from=builder /app/static /app/static
+
+# Expose the port the app runs on
 EXPOSE 5173
 
 # Start the application
-CMD ["npm", "run", "preview"] 
+CMD ["node", "build"] 
