@@ -22,17 +22,19 @@ export default {
     },
     projects: {
         title: 'Namų projektai',
-        area: 'Bendras plotas',
+        specifications: 'Specifikacijos',
+        description: 'Aprašymas',
+        area: 'Plotas',
         rooms: 'Kambarių skaičius',
         floors: 'Aukštų skaičius',
         roof: 'Stogas',
-        dimensions: 'Dydis, m',
+        dimensions: 'Išmatavimai',
         garage: 'Garažas',
-        view_details: 'Daugiau informacijos',
-        specifications: 'Specifikacijos',
-        description: 'Aprašymas',
-        contact_us: 'Susisiekite dėl šio projekto',
-        not_found: 'Projektas nerastas'
+        view_details: 'Peržiūrėti projektą',
+        contact_us: 'Susisiekti',
+        call_us: 'Paskambinti',
+        not_found: 'Projektas nerastas',
+        back_to_projects: 'Grįžti į projektų sąrašą'
     },
     contact: {
         title: 'Susisiekite su mumis',

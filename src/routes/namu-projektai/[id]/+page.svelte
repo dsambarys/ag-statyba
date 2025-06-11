@@ -1,12 +1,11 @@
 <script lang="ts">
     import { t } from '$lib/i18n/translate';
-    import ThemeLanguageControls from '$lib/components/ThemeLanguageControls.svelte';
     import { page } from '$app/stores';
+    import ThemeLanguageControls from '$lib/components/ThemeLanguageControls.svelte';
     import { onMount } from 'svelte';
 
-    // Project data (in a real app, this would come from a database or API)
     const projects = {
-        moldavitas: {
+        'moldavitas': {
             name: 'Moldavitas',
             categories: ['Modernūs namai', 'Plokščias stogas', 'Vieno aukšto namai'],
             specs: {
@@ -18,21 +17,14 @@
                 garage: 'Nėra'
             },
             images: [
-                '/images/projects/moldavitas/1.jpg',
-                '/images/projects/moldavitas/2.jpg',
-                '/images/projects/moldavitas/3.jpg',
-                '/images/projects/moldavitas/4.jpg'
+                'https://placehold.co/800x600?text=Moldavitas+1',
+                'https://placehold.co/800x600?text=Moldavitas+2',
+                'https://placehold.co/800x600?text=Moldavitas+3',
+                'https://placehold.co/800x600?text=Moldavitas+4'
             ],
-            description: `
-                Modernus vieno aukšto namas su plokščiu stogu, idealiai tinkantis šiuolaikinei šeimai. 
-                Erdvus 195.81 m² plotas suteikia komfortą ir funkcionalumą. Namas turi 8 kambarius, 
-                įskaitant erdvų svetainės ir virtuvės kompleksą, miegamuosius ir darbo zonas.
-                
-                Išskirtinis fasado dizainas su dideliais langais užtikrina puikų natūralų apšvietimą 
-                ir harmoniją su aplinka. Namo architektūra pabrėžia šiuolaikiškumą ir eleganciją.
-            `
+            description: 'Modernus vieno aukšto namas su plokščiu stogu, idealiai tinkantis šiuolaikinei šeimai. Erdvus ir funkcionalus projektas su didelėmis stiklinėmis sienomis, užtikrinančiomis maksimalų natūralios šviesos kiekį.'
         },
-        peridotas: {
+        'peridotas': {
             name: 'Peridotas',
             categories: ['Modernūs namai', 'Dviejų aukštų namai', 'Namai su šlaitiniu stogu'],
             specs: {
@@ -44,21 +36,14 @@
                 garage: 'Yra'
             },
             images: [
-                '/images/projects/peridotas/1.jpg',
-                '/images/projects/peridotas/2.jpg',
-                '/images/projects/peridotas/3.jpg',
-                '/images/projects/peridotas/4.jpg'
+                'https://placehold.co/800x600?text=Peridotas+1',
+                'https://placehold.co/800x600?text=Peridotas+2',
+                'https://placehold.co/800x600?text=Peridotas+3',
+                'https://placehold.co/800x600?text=Peridotas+4'
             ],
-            description: `
-                Dviejų aukštų modernus namas su šlaitiniu stogu ir integruotu garažu. 210.5 m² plotas 
-                paskirstytas per du aukštus, suteikiant optimalų erdvės išplanavimą. Pirmame aukšte 
-                įrengta erdvi svetainė, virtuvė ir pagalbinės patalpos, antrame - miegamieji ir darbo zonos.
-                
-                Išskirtinis fasado dizainas derina modernias medžiagas ir klasikines formas. Didelės 
-                stiklinės konstrukcijos užtikrina puikų natūralų apšvietimą ir ryšį su aplinka.
-            `
+            description: 'Dviejų aukštų šiuolaikinis namas su šlaitiniu stogu ir integruotu garažu. Puikiai subalansuotas erdvių išplanavimas, didelė terasa ir modernūs architektūriniai sprendimai.'
         },
-        alabastras: {
+        'alabastras': {
             name: 'Alabastras',
             categories: ['Modernūs namai', 'Plokščias stogas', 'Vieno aukšto namai', 'Namai su stogine'],
             specs: {
@@ -70,161 +55,163 @@
                 garage: 'Nėra'
             },
             images: [
-                '/images/projects/alabastras/1.jpg',
-                '/images/projects/alabastras/2.jpg',
-                '/images/projects/alabastras/3.jpg',
-                '/images/projects/alabastras/4.jpg'
+                'https://placehold.co/800x600?text=Alabastras+1',
+                'https://placehold.co/800x600?text=Alabastras+2',
+                'https://placehold.co/800x600?text=Alabastras+3',
+                'https://placehold.co/800x600?text=Alabastras+4'
             ],
-            description: `
-                Modernus vieno aukšto namas su plokščiu stogu ir integruota stogine. 185.3 m² plotas 
-                optimaliai išplanuotas, sukuriant erdvią ir patogią gyvenamąją aplinką. Namas turi 
-                7 kambarius, įskaitant svetainę, virtuvę, miegamuosius ir darbo zonas.
-                
-                Išskirtinis fasado dizainas su kontrastingomis medžiagomis ir didelėmis stiklinėmis 
-                konstrukcijomis sukuria modernų ir elegantišką vaizdą. Integruota stoginė suteikia 
-                papildomą funkcionalumą ir architektūrinį akcentą.
-            `
+            description: 'Modernus vieno aukšto namas su plokščiu stogu ir erdvia stogine automobiliams. Išskirtinis fasado dizainas ir optimizuotas vidaus išplanavimas sukuria jaukią ir funkcionalią gyvenamąją erdvę.'
         }
     };
 
-    let currentProject: any;
     let currentImageIndex = 0;
+    let project: any;
 
-    onMount(() => {
-        const projectId = $page.params.id;
-        currentProject = projects[projectId as keyof typeof projects];
-    });
-
-    function nextImage() {
-        if (currentProject) {
-            currentImageIndex = (currentImageIndex + 1) % currentProject.images.length;
-        }
+    $: {
+        const id = $page.params.id;
+        project = projects[id];
     }
 
-    function previousImage() {
-        if (currentProject) {
-            currentImageIndex = (currentImageIndex - 1 + currentProject.images.length) % currentProject.images.length;
-        }
-    }
+    const nextImage = () => {
+        currentImageIndex = (currentImageIndex + 1) % project.images.length;
+    };
+
+    const previousImage = () => {
+        currentImageIndex = (currentImageIndex - 1 + project.images.length) % project.images.length;
+    };
+
+    const selectImage = (index: number) => {
+        currentImageIndex = index;
+    };
 </script>
 
 <ThemeLanguageControls />
 
-<div class="min-h-screen bg-white dark:bg-gray-900">
-    <div class="max-w-[1200px] mx-auto px-4 py-16">
-        {#if currentProject}
-            <!-- Project Header -->
-            <div class="mb-8">
-                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{currentProject.name}</h1>
-                <div class="flex flex-wrap gap-2">
-                    {#each currentProject.categories as category}
-                        <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
-                            {category}
-                        </span>
-                    {/each}
-                </div>
-            </div>
-
-            <!-- Image Gallery -->
-            <div class="relative aspect-video mb-8 bg-gray-200 rounded-lg overflow-hidden">
-                <img
-                    src={currentProject.images[currentImageIndex]}
-                    alt={`${currentProject.name} - ${currentImageIndex + 1}`}
-                    class="w-full h-full object-cover"
-                />
-                
-                <!-- Navigation Arrows -->
-                <button
-                    on:click={previousImage}
-                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full"
-                >
-                    ←
-                </button>
-                <button
-                    on:click={nextImage}
-                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full"
-                >
-                    →
-                </button>
-
-                <!-- Image Counter -->
-                <div class="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                    {currentImageIndex + 1} / {currentProject.images.length}
-                </div>
-            </div>
-
-            <!-- Thumbnail Gallery -->
-            <div class="grid grid-cols-4 gap-4 mb-8">
-                {#each currentProject.images as image, index}
-                    <button
-                        on:click={() => currentImageIndex = index}
-                        class="relative aspect-video bg-gray-200 rounded-lg overflow-hidden {currentImageIndex === index ? 'ring-2 ring-blue-500' : ''}"
-                    >
+<div class="min-h-screen bg-[#f9fafb] dark:bg-gray-900 py-20">
+    <div class="max-w-[1200px] mx-auto px-5">
+        {#if project}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Image Gallery -->
+                <div class="relative">
+                    <div class="aspect-w-4 aspect-h-3 mb-4">
                         <img
-                            src={image}
-                            alt={`${currentProject.name} - ${index + 1}`}
-                            class="w-full h-full object-cover"
+                            src={project.images[currentImageIndex]}
+                            alt={`${project.name} - ${currentImageIndex + 1}`}
+                            class="w-full h-full object-cover rounded-lg shadow-lg"
                         />
-                    </button>
-                {/each}
-            </div>
-
-            <!-- Project Details -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Specifications -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('projects.specifications')}</h2>
-                    <div class="space-y-4">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">{t('projects.area')}</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{currentProject.specs.area} m²</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">{t('projects.rooms')}</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{currentProject.specs.rooms}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">{t('projects.floors')}</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{currentProject.specs.floors}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">{t('projects.roof')}</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{currentProject.specs.roof}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">{t('projects.dimensions')}</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{currentProject.specs.dimensions}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">{t('projects.garage')}</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{currentProject.specs.garage}</span>
-                        </div>
                     </div>
-                </div>
+                    
+                    <!-- Navigation Arrows -->
+                    <button
+                        class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full"
+                        on:click={previousImage}
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button
+                        class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full"
+                        on:click={nextImage}
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
 
-                <!-- Description -->
-                <div class="md:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t('projects.description')}</h2>
-                    <div class="prose dark:prose-invert max-w-none">
-                        {#each currentProject.description.trim().split('\n\n') as paragraph}
-                            <p class="mb-4 text-gray-600 dark:text-gray-400">{paragraph}</p>
+                    <!-- Thumbnail Navigation -->
+                    <div class="flex space-x-2 mt-4">
+                        {#each project.images as _, index}
+                            <button
+                                class="flex-1 aspect-w-4 aspect-h-3"
+                                class:opacity-50={currentImageIndex !== index}
+                                on:click={() => selectImage(index)}
+                            >
+                                <img
+                                    src={project.images[index]}
+                                    alt={`${project.name} - ${index + 1}`}
+                                    class="w-full h-full object-cover rounded-lg shadow-sm"
+                                />
+                            </button>
                         {/each}
                     </div>
                 </div>
-            </div>
 
-            <!-- Contact Button -->
-            <div class="mt-8 text-center">
-                <a
-                    href="/kontaktai"
-                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors"
-                >
-                    {t('projects.contact_us')}
-                </a>
+                <!-- Project Details -->
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{project.name}</h1>
+                    
+                    <!-- Categories -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        {#each project.categories as category}
+                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                                {category}
+                            </span>
+                        {/each}
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-gray-600 dark:text-gray-300 mb-8">
+                        {project.description}
+                    </p>
+
+                    <!-- Specifications -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{t('projects.specifications')}</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400">{t('projects.area')}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{project.specs.area} m²</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400">{t('projects.rooms')}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{project.specs.rooms}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400">{t('projects.floors')}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{project.specs.floors}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400">{t('projects.roof')}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{project.specs.roof}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400">{t('projects.dimensions')}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{project.specs.dimensions} m</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400">{t('projects.garage')}</p>
+                                <p class="font-medium text-gray-900 dark:text-white">{project.specs.garage}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a
+                            href="/kontaktai"
+                            class="flex-1 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors text-center"
+                        >
+                            {t('projects.contact_us')}
+                        </a>
+                        <a
+                            href={`tel:${$page.data.contactInfo?.phone}`}
+                            class="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-8 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-center"
+                        >
+                            {t('projects.call_us')}
+                        </a>
+                    </div>
+                </div>
             </div>
         {:else}
-            <div class="text-center text-gray-600 dark:text-gray-400">
-                {t('projects.not_found')}
+            <div class="text-center py-20">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('projects.not_found')}</h1>
+                <a
+                    href="/namu-projektai"
+                    class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors mt-4"
+                >
+                    {t('projects.back_to_projects')}
+                </a>
             </div>
         {/if}
     </div>
@@ -232,6 +219,6 @@
 
 <style>
     :global(body) {
-        @apply bg-white dark:bg-gray-900;
+        @apply bg-[#f9fafb] dark:bg-gray-900;
     }
 </style> 

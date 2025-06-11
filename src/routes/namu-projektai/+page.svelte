@@ -17,10 +17,10 @@
                 garage: 'Nėra'
             },
             images: [
-                '/images/projects/moldavitas/1.jpg',
-                '/images/projects/moldavitas/2.jpg',
-                '/images/projects/moldavitas/3.jpg',
-                '/images/projects/moldavitas/4.jpg'
+                'https://placehold.co/800x600?text=Moldavitas+1',
+                'https://placehold.co/800x600?text=Moldavitas+2',
+                'https://placehold.co/800x600?text=Moldavitas+3',
+                'https://placehold.co/800x600?text=Moldavitas+4'
             ]
         },
         {
@@ -36,10 +36,10 @@
                 garage: 'Yra'
             },
             images: [
-                '/images/projects/peridotas/1.jpg',
-                '/images/projects/peridotas/2.jpg',
-                '/images/projects/peridotas/3.jpg',
-                '/images/projects/peridotas/4.jpg'
+                'https://placehold.co/800x600?text=Peridotas+1',
+                'https://placehold.co/800x600?text=Peridotas+2',
+                'https://placehold.co/800x600?text=Peridotas+3',
+                'https://placehold.co/800x600?text=Peridotas+4'
             ]
         },
         {
@@ -55,10 +55,10 @@
                 garage: 'Nėra'
             },
             images: [
-                '/images/projects/alabastras/1.jpg',
-                '/images/projects/alabastras/2.jpg',
-                '/images/projects/alabastras/3.jpg',
-                '/images/projects/alabastras/4.jpg'
+                'https://placehold.co/800x600?text=Alabastras+1',
+                'https://placehold.co/800x600?text=Alabastras+2',
+                'https://placehold.co/800x600?text=Alabastras+3',
+                'https://placehold.co/800x600?text=Alabastras+4'
             ]
         }
     ];

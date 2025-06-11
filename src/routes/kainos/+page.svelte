@@ -36,28 +36,40 @@
         <!-- Pricing Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {#each data.pricingTiers as tier}
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:border-blue-500 transition-all">
-                    <h3 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{tier.type}</h3>
-                    <p class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-6">
-                        {formatPrice(tier.price)}
-                    </p>
-                    <ul class="space-y-4 mb-8">
-                        {#each tier.features as feature}
-                            <li class="flex items-start">
-                                <span class="text-green-500 dark:text-green-400 mr-3">✓</span>
-                                <span class="text-gray-600 dark:text-gray-300">{feature}</span>
-                            </li>
-                        {/each}
-                    </ul>
-                    {#if tier.note}
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{tier.note}</p>
-                    {/if}
-                    <button
-                        on:click={() => handleTierSelect(tier)}
-                        class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        Pasirinkti
-                    </button>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:border-blue-500 transition-all overflow-hidden">
+                    <!-- Image -->
+                    <div class="aspect-w-16 aspect-h-9">
+                        <img
+                            src={tier.image}
+                            alt={tier.type}
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="p-8">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{tier.type}</h3>
+                        <p class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-6">
+                            {formatPrice(tier.price)}
+                        </p>
+                        <ul class="space-y-4 mb-8">
+                            {#each tier.features as feature}
+                                <li class="flex items-start">
+                                    <span class="text-green-500 dark:text-green-400 mr-3">✓</span>
+                                    <span class="text-gray-600 dark:text-gray-300">{feature}</span>
+                                </li>
+                            {/each}
+                        </ul>
+                        {#if tier.note}
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{tier.note}</p>
+                        {/if}
+                        <button
+                            on:click={() => handleTierSelect(tier)}
+                            class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            Pasirinkti
+                        </button>
+                    </div>
                 </div>
             {/each}
         </div>
@@ -103,7 +115,7 @@
                             />
                         </div>
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefono numeris</label>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefonas</label>
                             <input
                                 type="tel"
                                 id="phone"
@@ -122,13 +134,13 @@
                             <button
                                 type="button"
                                 on:click={() => showContactForm = false}
-                                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md"
+                                class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                             >
                                 Atšaukti
                             </button>
                             <button
                                 type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                             >
                                 Siųsti
                             </button>
@@ -139,3 +151,9 @@
         {/if}
     </div>
 </div>
+
+<style>
+    :global(body) {
+        @apply bg-white dark:bg-gray-900;
+    }
+</style>

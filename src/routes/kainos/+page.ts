@@ -6,6 +6,7 @@ interface PricingTier {
     description: string;
     features: string[];
     note?: string;
+    image: string;
 }
 
 interface Feature {
@@ -26,7 +27,8 @@ export const load: Load = async () => {
                 'Šildymo dalis',
                 'Elektrotechnikos dalis',
                 'Vėdinimo dalis'
-            ]
+            ],
+            image: 'https://placehold.co/800x600?text=Tipinis+vienbutis'
         },
         {
             type: 'Tipinis dvibutis',
@@ -39,10 +41,11 @@ export const load: Load = async () => {
                 'Šildymo dalis',
                 'Elektrotechnikos dalis',
                 'Vėdinimo dalis'
-            ]
+            ],
+            image: 'https://placehold.co/800x600?text=Tipinis+dvibutis'
         },
         {
-            type: 'Individualus iki 100 m2',
+            type: 'Individualus iki 100 m²',
             price: 4000,
             description: 'Individualus projektas namams iki 100 m²',
             features: [
@@ -52,10 +55,11 @@ export const load: Load = async () => {
                 'Inžinerinės dalys',
                 'Projekto derinimas',
                 'Autorinė priežiūra'
-            ]
+            ],
+            image: 'https://placehold.co/800x600?text=Individualus+iki+100m2'
         },
         {
-            type: 'Individualus vienbutis iki 300 m2',
+            type: 'Individualus vienbutis iki 300 m²',
             price: 4300,
             description: 'Individualus projektas didesniems namams',
             features: [
@@ -65,10 +69,11 @@ export const load: Load = async () => {
                 'Inžinerinės dalys',
                 'Projekto derinimas',
                 'Autorinė priežiūra'
-            ]
+            ],
+            image: 'https://placehold.co/800x600?text=Individualus+vienbutis+iki+300m2'
         },
         {
-            type: 'Individualus dvibutis iki 300 m2',
+            type: 'Individualus dvibutis iki 300 m²',
             price: 4600,
             description: 'Individualus dvibučio namo projektas',
             features: [
@@ -78,7 +83,8 @@ export const load: Load = async () => {
                 'Inžinerinės dalys',
                 'Projekto derinimas',
                 'Autorinė priežiūra'
-            ]
+            ],
+            image: 'https://placehold.co/800x600?text=Individualus+dvibutis+iki+300m2'
         }
     ];
 
