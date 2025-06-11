@@ -3,7 +3,12 @@
 	import { currentLanguage } from '$lib/stores/language';
 	import ThemeLanguageControls from '$lib/components/ThemeLanguageControls.svelte';
 	import { onMount } from 'svelte';
+	import { enhance } from '$app/forms';
+	import ReCaptcha from '$lib/components/ReCaptcha.svelte';
+	import type { ActionData } from './$types';
+
 	export let data;
+	export let form: ActionData;
 
 	let formData = {
 		name: '',
@@ -19,6 +24,8 @@
 	let isAuthenticated = false;
 	let isAdmin = false;
 	let contacts: any[] = [];
+	let recaptchaToken: string | null = null;
+	let isSubmitting = false;
 
 	const subjects = [
 		'Namų projektavimas',
@@ -273,6 +280,18 @@
 			console.error('Error logging out:', err);
 		}
 	};
+
+	function handleRecaptchaVerify(token: string) {
+		recaptchaToken = token;
+	}
+
+	function handleRecaptchaExpire() {
+		recaptchaToken = null;
+	}
+
+	function handleRecaptchaError() {
+		recaptchaToken = null;
+	}
 </script>
 
 <ThemeLanguageControls />
@@ -303,7 +322,21 @@
 						</div>
 					{/if}
 
-					<form on:submit|preventDefault={handleSubmit} class="space-y-6">
+					<form
+						method="POST"
+						use:enhance={() => {
+							isSubmitting = true;
+							return async ({ result }) => {
+								isSubmitting = false;
+								if (result.type === 'success') {
+									// Reset form and reCAPTCHA
+									recaptchaToken = null;
+									grecaptcha.reset();
+								}
+							};
+						}}
+						class="space-y-6"
+					>
 						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 							<div>
 								<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -376,21 +409,19 @@
 								class="w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
 							></textarea>
 						</div>
+						<ReCaptcha
+							onVerify={handleRecaptchaVerify}
+							onExpire={handleRecaptchaExpire}
+							onError={handleRecaptchaError}
+						/>
+						<input type="hidden" name="recaptchaToken" value={recaptchaToken || ''} />
 						<div class="text-right">
 							<button
 								type="submit"
-								disabled={loading}
+								disabled={!recaptchaToken || isSubmitting}
 								class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
 							>
-								{#if loading}
-									<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-									</svg>
-									<span>{t('contact.form.sending')}</span>
-								{:else}
-									<span>{t('contact.form.send')}</span>
-								{/if}
+								{isSubmitting ? 'Siunčiama...' : 'Siųsti'}
 							</button>
 						</div>
 					</form>

@@ -47,6 +47,8 @@
 	},
 	"dependencies": {
 		"@apollo/server": "^4.10.0",
+		"@graphql-tools/merge": "^9.0.24",
+		"@graphql-tools/schema": "^10.0.23",
 		"@stripe/stripe-js": "^7.3.1",
 		"@types/bcrypt": "^5.0.2",
 		"@types/bcryptjs": "^2.4.6",
