@@ -1,0 +1,17 @@
+{
+    "common": {
+        "switchLanguage": "Switch Language",
+        "toggleTheme": "Toggle Theme"
+    },
+    "contact": {
+        "form": {
+            "title": "Contact Form",
+            "name": "Name",
+            "email": "Email",
+            "message": "Message",
+            "submit": "Send Message",
+            "success": "Message sent successfully",
+            "error": "Failed to send message"
+        }
+    }
+} 

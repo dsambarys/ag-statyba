@@ -8,6 +8,13 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	interface Window {
+		grecaptcha: {
+			render: (container: HTMLElement, options: any) => number;
+			reset: (widgetId?: number) => void;
+		};
+	}
 }
 
 export {};

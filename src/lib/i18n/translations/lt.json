@@ -1,0 +1,17 @@
+{
+    "common": {
+        "switchLanguage": "Pakeisti Kalbą",
+        "toggleTheme": "Pakeisti Temą"
+    },
+    "contact": {
+        "form": {
+            "title": "Susisiekimo Forma",
+            "name": "Vardas",
+            "email": "El. Paštas",
+            "message": "Žinutė",
+            "submit": "Siųsti Žinutę",
+            "success": "Žinutė sėkmingai išsiųsta",
+            "error": "Nepavyko išsiųsti žinutės"
+        }
+    }
+} 

@@ -1,130 +1,96 @@
 <script lang="ts">
 	import ThemeLanguageControls from '$lib/components/ThemeLanguageControls.svelte';
-	import { loadStripe } from '@stripe/stripe-js';
-	import { PUBLIC_STRIPE_PUBLISHABLE_KEY } from '$env/static/public';
+	import ServiceImage from '$lib/components/ServiceImage.svelte';
+	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
 	export let data;
 
 	let selectedTier = null;
-	let showPaymentForm = false;
-	let stripe;
-	let elements;
-	let paymentElement;
-	let clientSecret;
+	let showContactForm = false;
+	let name = '';
+	let email = '';
+	let phone = '';
+	let message = '';
 	let processing = false;
+	let successMessage = '';
 	let errorMessage = '';
+	let recaptchaToken = '';
 
-	// Initialize Stripe
-	async function initializeStripe() {
-		try {
-			if (!stripe) {
-				stripe = await loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
-			}
-			return stripe;
-		} catch (error) {
-			console.error('Error initializing Stripe:', error);
-			errorMessage = 'Failed to initialize payment system';
-			return null;
-		}
-	}
+	// Initialize reCAPTCHA
+	onMount(async () => {
+		const script = document.createElement('script');
+		script.src = 'https://www.google.com/recaptcha/api.js?render=6LcXXX...'; // Replace with your site key
+		script.async = true;
+		document.head.appendChild(script);
+		await new Promise(resolve => script.onload = resolve);
+	});
 
 	// Handle tier selection
-	const handleTierSelect = async (tier) => {
+	const handleTierSelect = (tier) => {
 		selectedTier = tier;
-		showPaymentForm = true;
+		showContactForm = true;
+		message = `Susidomėjau ${tier.type} paketu už ${formatPrice(tier.price)}`;
+		successMessage = '';
 		errorMessage = '';
-		
-		try {
-			await createPaymentIntent(tier.price);
-		} catch (error) {
-			console.error('Error in handleTierSelect:', error);
-			errorMessage = error.message || 'Failed to initialize payment. Please try again.';
-		}
 	};
 
-	// Create payment intent
-	async function createPaymentIntent(amount: number) {
-		// Initialize Stripe first
-		stripe = await initializeStripe();
-		if (!stripe) {
-			throw new Error('Failed to initialize Stripe');
-		}
-
-		// Create payment intent
-		const response = await fetch('/api/create-payment-intent', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ amount })
-		});
-
-		if (!response.ok) {
-			throw new Error('Failed to create payment intent');
-		}
-
-		const data = await response.json();
-		if (data.error) {
-			throw new Error(data.error);
-		}
-
-		clientSecret = data.clientSecret;
-		if (!clientSecret) {
-			throw new Error('No client secret received');
-		}
-
-		// Create Elements instance
-		elements = stripe.elements({
-			clientSecret,
-			appearance: {
-				theme: 'stripe',
-				variables: {
-					colorPrimary: '#3b82f6'
-				}
-			}
-		});
-
-		// Create and mount the Payment Element
-		if (paymentElement) {
-			paymentElement.destroy();
-		}
-		paymentElement = elements.create('payment');
-		paymentElement.mount('#payment-element');
-	}
-
-	// Handle payment submission
+	// Handle form submission
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
-		
-		if (!stripe || !elements || !clientSecret) {
-			console.error('Missing required payment components:', {
-				stripe: !!stripe,
-				elements: !!elements,
-				clientSecret: !!clientSecret
-			});
-			errorMessage = 'Payment system not initialized. Please try again.';
+		processing = true;
+		errorMessage = '';
+		successMessage = '';
+
+		if (!name || !email || !message) {
+			errorMessage = 'Prašome užpildyti visus būtinus laukus';
+			processing = false;
 			return;
 		}
 
-		processing = true;
-		errorMessage = '';
-
 		try {
-			const { error } = await stripe.confirmPayment({
-				elements,
-				confirmParams: {
-					return_url: `${window.location.origin}/payment-success`
-				}
+			// Execute reCAPTCHA
+			recaptchaToken = await new Promise((resolve, reject) => {
+				// @ts-ignore
+				grecaptcha.ready(() => {
+					// @ts-ignore
+					grecaptcha.execute('6LcXXX...', { action: 'submit' }) // Replace with your site key
+						.then(resolve)
+						.catch(reject);
+				});
 			});
 
-			if (error) {
-				throw error;
+			const form = e.target as HTMLFormElement;
+			const formData = new FormData(form);
+			formData.append('recaptchaToken', recaptchaToken);
+
+			const response = await fetch(form.action, {
+				method: 'POST',
+				body: formData
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				successMessage = result.message;
+				showContactForm = false;
+				resetForm();
+			} else {
+				errorMessage = result.error || 'Įvyko klaida siunčiant užklausą. Bandykite dar kartą.';
 			}
 		} catch (error) {
-			console.error('Error in handleSubmit:', error);
-			errorMessage = error.message || 'An error occurred during payment.';
+			errorMessage = 'Įvyko klaida siunčiant užklausą. Bandykite dar kartą.';
 		} finally {
 			processing = false;
 		}
+	}
+
+	function resetForm() {
+		name = '';
+		email = '';
+		phone = '';
+		message = '';
+		selectedTier = null;
+		recaptchaToken = '';
 	}
 
 	const formatPrice = (price: number) => {
@@ -135,17 +101,6 @@
 			maximumFractionDigits: 0
 		}).format(price);
 	};
-
-	// Cleanup function
-	function cleanup() {
-		if (paymentElement) {
-			paymentElement.destroy();
-			paymentElement = null;
-		}
-		clientSecret = null;
-		elements = null;
-		errorMessage = '';
-	}
 </script>
 
 <ThemeLanguageControls />
@@ -161,16 +116,22 @@
             </p>
         </div>
 
+        {#if successMessage}
+            <div class="bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-400 p-4 rounded-lg mb-8 text-center">
+                {successMessage}
+            </div>
+        {/if}
+
         <!-- Pricing Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {#each data.pricingTiers as tier}
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 hover:border-blue-500 transition-all overflow-hidden">
                     <!-- Image -->
                     <div class="aspect-w-16 aspect-h-9">
-                        <img
+                        <ServiceImage
                             src={tier.image}
                             alt={tier.type}
-                            class="w-full h-full object-cover"
+                            className="w-full h-full"
                         />
                     </div>
                     
@@ -195,31 +156,18 @@
                             on:click={() => handleTierSelect(tier)}
                             class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Apmokėti
+                            Susisiekti
                         </button>
                     </div>
                 </div>
             {/each}
         </div>
 
-        <!-- Additional Information -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 mb-16">
-            <h2 class="text-2xl font-semibold mb-8 text-center text-gray-900 dark:text-white">Papildoma informacija</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {#each data.additionalInfo.features as feature}
-                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{feature.title}</h3>
-                        <p class="text-gray-600 dark:text-gray-300">{feature.description}</p>
-                    </div>
-                {/each}
-            </div>
-        </div>
-
-        <!-- Payment Form Modal -->
-        {#if showPaymentForm}
-            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <!-- Contact Form Modal -->
+        {#if showContactForm}
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-lg w-full">
-                    <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Apmokėjimas</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Susisiekite su mumis</h2>
                     <p class="text-gray-600 dark:text-gray-300 mb-6">
                         Pasirinktas paketas: <span class="font-semibold">{selectedTier?.type}</span>
                         <br />
@@ -232,33 +180,87 @@
                         </div>
                     {/if}
 
-                    <form on:submit={handleSubmit} class="space-y-6">
-                        <div id="payment-element" class="mb-6"></div>
-                        
+                    <form on:submit={handleSubmit} class="space-y-6" method="POST">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Vardas *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                bind:value={name}
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">El. paštas *</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                bind:value={email}
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefonas</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                bind:value={phone}
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Žinutė *</label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                bind:value={message}
+                                rows="4"
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
+                            ></textarea>
+                        </div>
+
                         <div class="flex justify-end space-x-4">
                             <button
                                 type="button"
-                                on:click={() => {
-                                    showPaymentForm = false;
-                                    cleanup();
-                                }}
-                                class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                                disabled={processing}
+                                on:click={() => showContactForm = false}
+                                class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                             >
                                 Atšaukti
                             </button>
                             <button
                                 type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={processing}
+                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
                             >
-                                {processing ? 'Apdorojama...' : 'Apmokėti'}
+                                {processing ? 'Siunčiama...' : 'Siųsti'}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         {/if}
+
+        <!-- Additional Information -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 mb-16">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">{data.additionalInfo.featuresTitle}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {#each data.additionalInfo.features as feature}
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{feature.title}</h3>
+                        <p class="text-gray-600 dark:text-gray-300">{feature.description}</p>
+                    </div>
+                {/each}
+            </div>
+        </div>
     </div>
 </div>
 

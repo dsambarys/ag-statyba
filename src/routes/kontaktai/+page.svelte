@@ -296,8 +296,7 @@
 
 <ThemeLanguageControls />
 
-<!-- Hero Section with Centered Form -->
-<section class="min-h-screen bg-[#f9fafb] dark:bg-gray-900 flex flex-col items-center justify-center py-20" aria-labelledby="contact-title">
+<section class="bg-white dark:bg-gray-900 py-20">
 	<div class="max-w-[1200px] w-full mx-auto px-5">
 		<div class="text-center mb-12">
 			<h1 class="text-5xl font-bold text-gray-900 dark:text-white">{t('contact.title')}</h1>
@@ -322,21 +321,7 @@
 						</div>
 					{/if}
 
-					<form
-						method="POST"
-						use:enhance={() => {
-							isSubmitting = true;
-							return async ({ result }) => {
-								isSubmitting = false;
-								if (result.type === 'success') {
-									// Reset form and reCAPTCHA
-									recaptchaToken = null;
-									grecaptcha.reset();
-								}
-							};
-						}}
-						class="space-y-6"
-					>
+					<form method="POST" use:enhance class="space-y-6">
 						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 							<div>
 								<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -427,43 +412,7 @@
 					</form>
 				</div>
 			</div>
-
-			<!-- Login Form -->
-			<div class="max-w-md mx-auto">
-				<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
-					<h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Admin Login</h2>
-					<form on:submit={handleLogin} class="space-y-4">
-						<div>
-							<label for="login-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-							<input
-								type="email"
-								id="login-email"
-								name="email"
-								required
-								class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-							/>
-						</div>
-						<div>
-							<label for="login-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-							<input
-								type="password"
-								id="login-password"
-								name="password"
-								required
-								class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-							/>
-						</div>
-						<button
-							type="submit"
-							class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
-						>
-							Login
-						</button>
-					</form>
-				</div>
-			</div>
 		{:else}
-			<!-- Admin Panel -->
 			<div class="max-w-6xl mx-auto">
 				<div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700">
 					<div class="flex justify-between items-center mb-6">
