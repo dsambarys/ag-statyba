@@ -113,3 +113,5 @@ export const load: Load = async () => {
         throw error(500, 'Failed to load pricing information');
     }
 };
+
+export const prerender = false;

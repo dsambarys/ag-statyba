@@ -4,6 +4,10 @@ type TranslationKey = {
 
 export const translations: Record<'en' | 'lt', TranslationKey> = {
     en: {
+        common: {
+            switchLanguage: 'Switch Language',
+            toggleTheme: 'Toggle Theme'
+        },
         nav: {
             services: 'Services',
             portfolio: 'Portfolio',
@@ -23,6 +27,22 @@ export const translations: Record<'en' | 'lt', TranslationKey> = {
                 house_projects: 'House Projects',
                 house_interiors: 'House Interiors'
             }
+        },
+        projects: {
+            title: 'Projects',
+            specifications: 'Specifications',
+            area: 'Area',
+            rooms: 'Rooms',
+            floors: 'Floors',
+            roof: 'Roof Type',
+            dimensions: 'Dimensions',
+            garage: 'Garage',
+            view_details: 'View Details',
+            contact_us: 'Contact Us',
+            call_us: 'Call Us'
+        },
+        portfolio: {
+            title: 'Our Portfolio'
         },
         contact: {
             title: 'Contact Us',
@@ -55,6 +75,10 @@ export const translations: Record<'en' | 'lt', TranslationKey> = {
         }
     },
     lt: {
+        common: {
+            switchLanguage: 'Pakeisti Kalbą',
+            toggleTheme: 'Pakeisti Temą'
+        },
         nav: {
             services: 'Paslaugos',
             portfolio: 'Portfolio',
@@ -74,6 +98,22 @@ export const translations: Record<'en' | 'lt', TranslationKey> = {
                 house_projects: 'Namų projektai',
                 house_interiors: 'Namų interjerai'
             }
+        },
+        projects: {
+            title: 'Projektai',
+            specifications: 'Specifikacijos',
+            area: 'Plotas',
+            rooms: 'Kambariai',
+            floors: 'Aukštai',
+            roof: 'Stogo tipas',
+            dimensions: 'Matmenys',
+            garage: 'Garažas',
+            view_details: 'Peržiūrėti',
+            contact_us: 'Susisiekite',
+            call_us: 'Skambinkite'
+        },
+        portfolio: {
+            title: 'Mūsų Portfolio'
         },
         contact: {
             title: 'Susisiekite su mumis',

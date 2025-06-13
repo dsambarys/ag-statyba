@@ -55,4 +55,6 @@ export const load: Load = async () => {
     return {
         contactInfo
     };
-}; 
+};
+
+export const prerender = false; 

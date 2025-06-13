@@ -1,4 +1,4 @@
-<section class="py-20 bg-[#f9fafb]" role="region" aria-labelledby="contact-title">
+<section class="py-20 bg-[#f9fafb]" aria-labelledby="contact-title">
     <div class="max-w-[1200px] mx-auto px-5 ">
         <div class="text-center mb-12">
             <h2 class="text-5xl font-bold" data-translate="contact.title">Susisiekite su mumis</h2>
@@ -29,7 +29,7 @@
                     <span class="text-lg text-[#1d4ed8]" aria-hidden="true">✉️</span>
                     <div>
                         <strong data-translate="contact.info.email.label">El. paštas:</strong><br>
-                        <a href="mailto:dsambarys@gmail.com" data-translate="contact.info.email.value">test@agstatyba.lt</a>
+                        <a href="mailto:agstatyba@hotmail.com" data-translate="contact.info.email.value">agstatyba@hotmail.com</a>
                     </div>
                 </div>
                 
